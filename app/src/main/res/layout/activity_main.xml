@@ -7,11 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    android:id="@+id/headerView"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    tools:ignore="MissingConstraints">
     <View
         android:layout_width="match_parent"
         android:layout_height="100dp"
