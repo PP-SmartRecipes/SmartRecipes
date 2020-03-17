@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "465218688737",
+    "firebase_url": "https://smartrecipes-c64e7.firebaseio.com",
+    "project_id": "smartrecipes-c64e7",
+    "storage_bucket": "smartrecipes-c64e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465218688737:android:ec1c5bc047df93d9edc9a0",
+        "android_client_info": {
+          "package_name": "com.example.smartrecipes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465218688737-p7tpb68pkpe1s4afdaaila28f0l4jo3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkU14KAtGKFOTeBtH1nYUh9KOJyNHvTp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465218688737-p7tpb68pkpe1s4afdaaila28f0l4jo3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465218688737:android:7a57b8c57db720a5edc9a0",
+        "android_client_info": {
+          "package_name": "com.example.test1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465218688737-p7tpb68pkpe1s4afdaaila28f0l4jo3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkU14KAtGKFOTeBtH1nYUh9KOJyNHvTp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465218688737-p7tpb68pkpe1s4afdaaila28f0l4jo3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
