@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.moje1);
+        mRecyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -68,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
         mFoodData = new Recipe("Tytul4","Opis4", "Cena4");
         myFoodList.add(mFoodData);
         mFoodData = new Recipe("Tytul5","Opis5", "Cena5");
+        myFoodList.add(mFoodData);
+        mFoodData = new Recipe("Tytul6","Opis6", "Cena6");
+        myFoodList.add(mFoodData);
+        mFoodData = new Recipe("Tytul7","Opis7", "Cena7");
+        myFoodList.add(mFoodData);
+        mFoodData = new Recipe("Tytul8","Opis8", "Cena8");
         myFoodList.add(mFoodData);
 
         MyAdapter myAdapter = new MyAdapter(MainActivity.this, myFoodList);
