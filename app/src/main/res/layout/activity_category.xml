@@ -27,6 +27,7 @@
        >
 
        <androidx.cardview.widget.CardView
+           android:id="@+id/breakfast_card"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_columnWeight="1"
@@ -59,6 +60,7 @@
        </androidx.cardview.widget.CardView>
 
        <androidx.cardview.widget.CardView
+           android:id="@+id/lunch_card"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_columnWeight="1"
@@ -92,6 +94,7 @@
        </androidx.cardview.widget.CardView>
 
        <androidx.cardview.widget.CardView
+           android:id="@+id/dinner_card"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_columnWeight="1"
@@ -125,6 +128,7 @@
        </androidx.cardview.widget.CardView>
 
        <androidx.cardview.widget.CardView
+           android:id="@+id/dessert_card"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_columnWeight="1"
@@ -158,6 +162,7 @@
        </androidx.cardview.widget.CardView>
 
        <androidx.cardview.widget.CardView
+           android:id="@+id/drink_card"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_columnWeight="1"
@@ -191,6 +196,7 @@
        </androidx.cardview.widget.CardView>
 
        <androidx.cardview.widget.CardView
+           android:id="@+id/fastfood_card"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_columnWeight="1"
