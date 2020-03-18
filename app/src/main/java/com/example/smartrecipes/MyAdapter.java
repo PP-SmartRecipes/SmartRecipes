@@ -16,7 +16,6 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
 
-
     private Context mContext;
     private List<Recipe> myFoodList;
 
@@ -36,17 +35,23 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, int i) {
-        //foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
+        foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
         foodViewHolder.mTitle.setText(myFoodList.get(i).getTitle());
-        foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
-        foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
-
+        //foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
+        //foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
         foodViewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent (mContext, Detail.class);
+                intent.putExtra("Image", myFoodList.get(foodViewHolder.getAdapterPosition()).getItemImage());
+                intent.putExtra("Description", myFoodList.get(foodViewHolder.getAdapterPosition()).getDescription());
+                intent.putExtra("Title", myFoodList.get(foodViewHolder.getAdapterPosition()).getTitle());
+                intent.putExtra("Ingredients", myFoodList.get(foodViewHolder.getAdapterPosition()).getIngredients());
+                mContext.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -63,13 +68,10 @@ class FoodViewHolder extends RecyclerView.ViewHolder{
 
     public FoodViewHolder(@NonNull View itemView) {
         super(itemView);
-
-        //imageView = itemView.findViewById(R.id.ivImage);
+        imageView = itemView.findViewById(R.id.ivImage);
         mTitle = itemView.findViewById(R.id.tvTitle);
-        mDescription = itemView.findViewById(R.id.tvDescription);
-        mCategory = itemView.findViewById(R.id.tvCategory);
+        //mDescription = itemView.findViewById(R.id.txtDescription);
+        //mCategory = itemView.findViewById(R.id.tvCategory);
         mCardview = itemView.findViewById(R.id.myCardView);
-
-
     }
 }
