@@ -7,26 +7,18 @@ public class Recipe {
     private String description;
     private String category;
     private HashMap<String, String> ingredients;
-    private int itemImage;
+    private String imageUrl;
 
-    public Recipe(){
+    public Recipe() {
 
     }
 
-    public Recipe(String title, String description, String category, HashMap<String, String> ingredients, int itemImage) {
+    public Recipe(String title, String description, String category, HashMap<String, String> ingredients, String imageUrl) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.ingredients = ingredients;
-        this.itemImage = itemImage;
-    }
-
-    public int getItemImage() {
-        return itemImage;
-    }
-
-    public void setItemImage(int itemImage) {
-        this.itemImage = itemImage;
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -53,11 +45,19 @@ public class Recipe {
         this.category = category;
     }
 
-    public void setIngredients(HashMap<String, String> ingredients){
+    public HashMap<String, String> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(HashMap<String, String> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public HashMap<String, String> getIngredients(){
-        return ingredients;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

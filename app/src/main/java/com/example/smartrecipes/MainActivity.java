@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     Recipe r = s.getValue(Recipe.class);
-                    r.setItemImage(R.drawable.dinner);
                     recipeList.add(r);
                     refresh();
                 }

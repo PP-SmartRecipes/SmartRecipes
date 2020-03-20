@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
@@ -35,7 +37,8 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, int i) {
-        foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
+        Picasso.get().load(myFoodList.get(i).getImageUrl()).into(foodViewHolder.imageView);
+        //foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
         foodViewHolder.mTitle.setText(myFoodList.get(i).getTitle());
         //foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
         //foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
@@ -44,7 +47,7 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
             public void onClick(View v) {
 
                 Intent intent = new Intent (mContext, Detail.class);
-                intent.putExtra("Image", myFoodList.get(foodViewHolder.getAdapterPosition()).getItemImage());
+                intent.putExtra("Image", myFoodList.get(foodViewHolder.getAdapterPosition()).getImageUrl());
                 intent.putExtra("Description", myFoodList.get(foodViewHolder.getAdapterPosition()).getDescription());
                 intent.putExtra("Title", myFoodList.get(foodViewHolder.getAdapterPosition()).getTitle());
                 intent.putExtra("Ingredients", myFoodList.get(foodViewHolder.getAdapterPosition()).getIngredients());

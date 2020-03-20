@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -32,7 +34,7 @@ public class Detail extends AppCompatActivity {
         if(mBundle != null){
             foodTitle.setText(mBundle.getString("Title"));
             foodDescription.setText(mBundle.getString("Description"));
-            foodImage.setImageResource(mBundle.getInt("Image"));
+            Picasso.get().load(mBundle.getString("Image")).into(foodImage);
         }
 
         Intent intent = getIntent();
