@@ -37,9 +37,9 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, int i) {
-        Picasso.get().load(myFoodList.get(i).getImageUrl()).into(foodViewHolder.imageView);
+        Picasso.get().load(myFoodList.get(myFoodList.size() - 1).getImageUrl()).into(foodViewHolder.imageView);
         //foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
-        foodViewHolder.mTitle.setText(myFoodList.get(i).getTitle());
+        foodViewHolder.mTitle.setText(myFoodList.get(myFoodList.size() - 1).getTitle());
         //foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
         //foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
         foodViewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
@@ -47,10 +47,10 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
             public void onClick(View v) {
 
                 Intent intent = new Intent (mContext, Detail.class);
-                intent.putExtra("Image", myFoodList.get(foodViewHolder.getAdapterPosition()).getImageUrl());
-                intent.putExtra("Description", myFoodList.get(foodViewHolder.getAdapterPosition()).getDescription());
-                intent.putExtra("Title", myFoodList.get(foodViewHolder.getAdapterPosition()).getTitle());
-                intent.putExtra("Ingredients", myFoodList.get(foodViewHolder.getAdapterPosition()).getIngredients());
+                intent.putExtra("Image", myFoodList.get(myFoodList.size() - 1).getImageUrl());
+                intent.putExtra("Description", myFoodList.get(myFoodList.size() - 1).getDescription());
+                intent.putExtra("Title", myFoodList.get(myFoodList.size() - 1).getTitle());
+                intent.putExtra("Ingredients", myFoodList.get(myFoodList.size() - 1).getIngredients());
                 mContext.startActivity(intent);
             }
         });
@@ -58,9 +58,7 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
     }
 
     @Override
-    public int getItemCount() {
-        return myFoodList.size();
-    }
+    public int getItemCount() { return 1; }
 }
 
 class FoodViewHolder extends RecyclerView.ViewHolder{

@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView = null;
     List<Recipe> recipeList = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
