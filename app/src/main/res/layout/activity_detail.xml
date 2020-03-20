@@ -53,7 +53,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ingredients"
+                        android:text="Składniki"
                         android:textStyle="bold"
                         android:textSize="20sp" />
 
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:padding="10dp"
-                        android:text="Ingredients"
+                        android:text="Składniki"
                         android:textSize="17sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -88,7 +88,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Description"
+                        android:text="Opis"
                         android:textStyle="bold"
                         android:textSize="20sp" />
 
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:padding="10dp"
-                        android:text="Description"
+                        android:text="Opis"
                         android:textSize="17sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
