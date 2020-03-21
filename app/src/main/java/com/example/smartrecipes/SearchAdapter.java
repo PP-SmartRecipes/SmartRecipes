@@ -50,6 +50,7 @@ public class SearchAdapter extends RecyclerView.Adapter<FoodViewHolder>{
                 intent.putExtra("Image", myFoodList.get(foodViewHolder.getAdapterPosition()).getImageUrl());
                 intent.putExtra("Description", myFoodList.get(foodViewHolder.getAdapterPosition()).getDescription());
                 intent.putExtra("Title", myFoodList.get(foodViewHolder.getAdapterPosition()).getTitle());
+                intent.putExtra("Category", myFoodList.get(foodViewHolder.getAdapterPosition()).getCategory());
                 intent.putExtra("Ingredients", myFoodList.get(foodViewHolder.getAdapterPosition()).getIngredients());
                 mContext.startActivity(intent);
             }

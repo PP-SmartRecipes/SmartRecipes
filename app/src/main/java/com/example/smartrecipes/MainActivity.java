@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         i = new Intent(this, recipes_list.class);
         i.putExtra("titleString", editSearch.getText().toString());
         startActivity(i);
+        editSearch.clearFocus();;
+        editSearch.setText("");
     }
 
     public static List<Recipe> getRecipeList(){

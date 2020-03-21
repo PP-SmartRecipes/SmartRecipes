@@ -18,6 +18,7 @@ public class Detail extends AppCompatActivity {
     TextView foodDescription;
     TextView foodIngredients;
     ImageView foodImage;
+    TextView foodCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +28,15 @@ public class Detail extends AppCompatActivity {
         foodTitle = (TextView)findViewById(R.id.txtTitle);
         foodDescription = (TextView)findViewById(R.id.txtDescription);
         foodIngredients = (TextView)findViewById(R.id.txtIngredients);
-        foodImage = (ImageView)findViewById((R.id.ivImage));
+        foodImage = (ImageView)findViewById(R.id.ivImage);
+        foodCategory = (TextView)findViewById(R.id.txtCategory);
 
         Bundle mBundle = getIntent().getExtras();
 
         if(mBundle != null){
             foodTitle.setText(mBundle.getString("Title"));
             foodDescription.setText(mBundle.getString("Description"));
+            foodCategory.setText(mBundle.getString("Category"));
             Picasso.get().load(mBundle.getString("Image")).into(foodImage);
         }
 
