@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         editSearch= (EditText) findViewById(R.id.edit_search);
+        editSearch.setOnClickListener(this);
         searchButton= (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
 
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(i);
         editSearch.clearFocus();;
         editSearch.setText("");
-        editSearch.setOnClickListener(this);
     }
 
     public static List<Recipe> getRecipeList(){
