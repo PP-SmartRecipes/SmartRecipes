@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Intent i;
-        i = new Intent(this, recipes_list.class);
+        i = new Intent(this, Recipes_list.class);
         i.putExtra("titleString", editSearch.getText().toString());
         startActivity(i);
         editSearch.clearFocus();;

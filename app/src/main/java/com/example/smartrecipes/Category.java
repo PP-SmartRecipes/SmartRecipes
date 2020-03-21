@@ -65,12 +65,12 @@ public class Category extends AppCompatActivity implements View.OnClickListener{
         Intent i;
 
         switch (v.getId()) {
-            case R.id.breakfast_card : i = new Intent(this, recipes_list.class); i.putExtra("categoryString", "breakfast"); startActivity(i); break;
-            case R.id.lunch_card : i = new Intent(this, recipes_list.class); i.putExtra("categoryString", "lunch"); startActivity(i); break;
-            case R.id.dinner_card : i = new Intent(this, recipes_list.class); i.putExtra("categoryString", "dinner"); startActivity(i); break;
-            case R.id.dessert_card : i = new Intent(this, recipes_list.class); i.putExtra("categoryString", "dessert"); startActivity(i); break;
-            case R.id.drink_card : i = new Intent(this, recipes_list.class); i.putExtra("categoryString", "drink"); startActivity(i); break;
-            case R.id.fastfood_card : i = new Intent(this, recipes_list.class); i.putExtra("categoryString", "fastfood"); startActivity(i); break;
+            case R.id.breakfast_card : i = new Intent(this, Category_list.class); i.putExtra("categoryString", "Śniadanie"); startActivity(i); break;
+            case R.id.lunch_card : i = new Intent(this, Category_list.class); i.putExtra("categoryString", "Lunch"); startActivity(i); break;
+            case R.id.dinner_card : i = new Intent(this, Category_list.class); i.putExtra("categoryString", "Obiad"); startActivity(i); break;
+            case R.id.dessert_card : i = new Intent(this, Category_list.class); i.putExtra("categoryString", "Deser"); startActivity(i); break;
+            case R.id.drink_card : i = new Intent(this, Category_list.class); i.putExtra("categoryString", "Napój"); startActivity(i); break;
+            case R.id.fastfood_card : i = new Intent(this, Category_list.class); i.putExtra("categoryString", "FastFood"); startActivity(i); break;
         }
     }
 }
