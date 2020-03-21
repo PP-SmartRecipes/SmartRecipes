@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -19,17 +21,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     DatabaseReference dbref = null;
     RecyclerView mRecyclerView = null;
-    List<Recipe> recipeList = null;
+    static List<Recipe> recipeList = null;
 
+    EditText editSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        editSearch= (EditText) findViewById(R.id.edit_search);
+        editSearch.setOnClickListener(this);
 
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -83,8 +89,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-        public void refresh() {
-            MyAdapter myAdapter = new MyAdapter(MainActivity.this, recipeList);
-            mRecyclerView.setAdapter(myAdapter);
-        }
+    public void refresh() {
+        MyAdapter myAdapter = new MyAdapter(MainActivity.this, recipeList);
+        mRecyclerView.setAdapter(myAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent i;
+        i = new Intent(this, recipes_list.class);
+        i.putExtra("titleString", editSearch.getText().toString());
+        startActivity(i);
+    }
+
+    public static List<Recipe> getRecipeList(){
+        return recipeList;
+    }
 }
