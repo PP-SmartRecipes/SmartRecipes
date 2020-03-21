@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static List<Recipe> recipeList = null;
 
     EditText editSearch;
+    Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         editSearch= (EditText) findViewById(R.id.edit_search);
-        editSearch.setOnClickListener(this);
+        searchButton= (Button) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(this);
 
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(i);
         editSearch.clearFocus();;
         editSearch.setText("");
+        editSearch.setOnClickListener(this);
     }
 
     public static List<Recipe> getRecipeList(){
