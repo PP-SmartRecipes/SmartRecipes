@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,18 +27,17 @@ public class recipes_list extends AppCompatActivity {
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
         Intent intent = getIntent();
-        String text = intent.getExtras().getString("titleString");
-
+        String text = intent.getExtras().getString("titleString").toLowerCase();
         List<Recipe> recipeList = MainActivity.getRecipeList();
         List<Recipe> recipeSearchList = new ArrayList<>();
         for(int i = 0; i < MainActivity.recipeList.size(); i++){
-            if(MainActivity.recipeList.get(i).getTitle().contains(text)){
+            if(MainActivity.recipeList.get(i).getTitle().toLowerCase().contains(text)){
                 recipeSearchList.add(MainActivity.recipeList.get(i));
             }
         }
 
-        SearchAdapter mySearchAdapter = new SearchAdapter(recipes_list.this, recipeSearchList,text);
+        SearchAdapter mySearchAdapter = new SearchAdapter(recipes_list.this, recipeSearchList);
         mRecyclerView.setAdapter(mySearchAdapter);
-        
+
     }
 }
