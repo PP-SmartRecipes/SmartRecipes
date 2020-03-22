@@ -28,15 +28,7 @@ public class Recipes_list extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(Recipes_list.this, 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
-        Intent intent = getIntent();
-        String text = intent.getExtras().getString("titleString").toLowerCase();
-        List<Recipe> recipeList = MainActivity.getRecipeList();
-        List<Recipe> recipeSearchList = new ArrayList<>();
-        for(int i = 0; i < recipeList.size(); i++){
-            if(recipeList.get(i).getTitle().toLowerCase().contains(text)){
-                recipeSearchList.add(recipeList.get(i));
-            }
-        }
+        List<Recipe> recipeSearchList = MainActivity.getRecipeSearchList();
 
         SearchAdapter mySearchAdapter = new SearchAdapter(Recipes_list.this, recipeSearchList);
         mRecyclerView.setAdapter(mySearchAdapter);

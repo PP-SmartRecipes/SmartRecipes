@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseReference dbref = null;
     RecyclerView mRecyclerView = null;
     static List<Recipe> recipeList = null;
+    static List<Recipe> recipeSearchList = null;
 
     EditText editSearch;
     Button searchButton;
@@ -103,12 +105,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i;
         i = new Intent(this, Recipes_list.class);
         i.putExtra("titleString", editSearch.getText().toString());
-        startActivity(i);
-        editSearch.clearFocus();;
-        editSearch.setText("");
+        recipeSearchList = new ArrayList<Recipe>();
+        for(int x = 0; x < recipeList.size(); x++){
+            if(recipeList.get(x).getTitle().toLowerCase().contains(editSearch.getText().toString().toLowerCase())){
+                recipeSearchList.add(recipeList.get(x));
+            }
+        }
+        if(!recipeSearchList.isEmpty()){
+            startActivity(i);
+            editSearch.clearFocus();;
+            editSearch.setText("");
+        }
+        else{
+            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+            alert.setTitle("Uwaga!");
+            alert.setMessage("Nie znaleziono przepisów zawierających podaną frazę. Podaj inną frazę.");
+            alert.setPositiveButton("OK",null);
+            alert.show();
+        }
     }
 
     public static List<Recipe> getRecipeList(){
         return recipeList;
+    }
+    public static List<Recipe> getRecipeSearchList(){
+        return recipeSearchList;
     }
 }
