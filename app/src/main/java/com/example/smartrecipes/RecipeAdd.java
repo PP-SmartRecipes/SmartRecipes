@@ -128,10 +128,14 @@ public class RecipeAdd extends AppCompatActivity {
         confirmIng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ingredients.put(ingredientsEditText.getText().toString(), ingredientQuantity.getText().toString());
-                ingredientsStrings.add(ingredientsEditText.getText().toString() + "\t\t" + ingredientQuantity.getText().toString());
-                ingredientsEditText.setText("");
-                ingredientQuantity.setText("");
+                if(ingredientsEditText.getText().toString().isEmpty() || ingredientQuantity.getText().toString().isEmpty())
+                    ;
+                else {
+                    ingredients.put(ingredientsEditText.getText().toString(), ingredientQuantity.getText().toString());
+                    ingredientsStrings.add(ingredientsEditText.getText().toString() + "\t\t" + ingredientQuantity.getText().toString());
+                    ingredientsEditText.setText("");
+                    ingredientQuantity.setText("");
+                }
             }
         });
 
