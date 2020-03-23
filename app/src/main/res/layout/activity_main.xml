@@ -32,7 +32,7 @@
         app:cardBackgroundColor="@color/colorPrimaryDark"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/edit_search"
             android:layout_width="match_parent"
             android:layout_height="50dp"

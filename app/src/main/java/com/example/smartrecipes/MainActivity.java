@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -30,20 +33,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static List<Recipe> recipeList = null;
     static List<Recipe> recipeSearchList = null;
 
-    EditText editSearch;
+    AutoCompleteTextView editSearch;
     Button searchButton;
-    Button newRecipeButton = null;
+    String [] suggestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editSearch= (EditText) findViewById(R.id.edit_search);
+        editSearch= (AutoCompleteTextView) findViewById(R.id.edit_search);
         editSearch.setOnClickListener(this);
         searchButton= (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
-        newRecipeButton = (Button)findViewById(R.id.button_newrecipe);
 
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -83,11 +85,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipeList.clear();
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     Recipe r = s.getValue(Recipe.class);
                     recipeList.add(r);
                     refresh();
                 }
+                suggestions = new String[recipeList.size()];
+                for(int i = 0; i < recipeList.size(); i++){
+                    suggestions[i] = recipeList.get(i).getTitle();
+                    Log.e("test",suggestions[i]);
+                }
+                editSearch.setAdapter(new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,suggestions));
             }
 
             @Override
@@ -96,14 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        newRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i;
-                i = new Intent(v.getContext(), RecipeAdd.class);
-                startActivity(i);
-            }
-        });
     }
 
     public void refresh() {
