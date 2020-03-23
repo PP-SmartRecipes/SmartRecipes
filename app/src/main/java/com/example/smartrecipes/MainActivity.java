@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     AutoCompleteTextView editSearch;
     Button searchButton;
+    Button newRecipeButton = null;
     String [] suggestions;
 
     @Override
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editSearch.setOnClickListener(this);
         searchButton= (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
+        newRecipeButton = (Button)findViewById(R.id.button_newrecipe);
 
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -102,6 +104,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        newRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i;
+                i = new Intent(v.getContext(),RecipeAdd.class);
+                startActivity(i);
             }
         });
 
