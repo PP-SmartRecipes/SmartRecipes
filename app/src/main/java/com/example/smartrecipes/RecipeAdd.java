@@ -45,12 +45,9 @@ public class RecipeAdd extends AppCompatActivity {
     Button imageButton = null;
     boolean done = false;
     String imageUrl = "";
-    //List<Ingredient> ingList;
     List<String> ingredientsStrings;
-    List<String> quantityStrings;
     EditText eanEditText;
     EditText brandEditText;
-    EditText productNameEditText;
     EditText ingredientsEditText = null;
     EditText ingredientQuantity = null;
     ListView ingredientsList = null;
@@ -59,10 +56,7 @@ public class RecipeAdd extends AppCompatActivity {
     AnimatedVectorDrawable avd2 = null;
     Button sendBtn;
     Button confirmIng;
-    String json;
     ArrayList<String> autocomplete;
-    String result;
-    String EAN;
     ArrayList<String> reqHints;
     String[] reqHintsArr;
 
@@ -77,7 +71,6 @@ public class RecipeAdd extends AppCompatActivity {
 
         eanEditText = findViewById(R.id.ean);
         brandEditText = findViewById(R.id.brand);
-        //productNameEditText = findViewById(R.id.productName);
         ingredientsEditText = findViewById(R.id.ingredients);
         ingredientQuantity = findViewById(R.id.quantity);
         sendBtn = findViewById(R.id.sendBtn);
@@ -151,75 +144,10 @@ public class RecipeAdd extends AppCompatActivity {
                 String item = ingredientsStrings.get(position);
                 ingredientsStrings.remove(item);
                 ingredients.remove(item);
-                //ingList.remove(ingList.get(position));
                 adapter.notifyDataSetChanged();
             }
         });
 
-        /*
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Product editedProduct = new Product();
-                ArrayList<Ingredient> ingredientsList = new ArrayList<>();
-
-                for (String item : ingStrings){
-                    ingList.add(new Ingredient(item));
-                    ingredientsList.add(new Ingredient(item));
-                }
-
-                if(prod!=null){
-                    prod.setBrand(brandEditText.getText().toString());
-                    prod.setProductName(productNameEditText.getText().toString());
-                    prod.setIngredients(ingredientsList);
-                } else {
-                    editedProduct.setBrand(brandEditText.getText().toString());
-                    editedProduct.setProductName(productNameEditText.getText().toString());
-                    editedProduct.setIngredients(ingredientsList);
-                }
-
-
-
-                if(prod!=null) {
-                    prod.setId(prod.getId());
-                    prod.setGtin(prod.getGtin());
-                } else {
-                    editedProduct.setGtin(EAN);
-                }
-
-                try {
-                    if(prod!=null) json = new ObjectMapper().writeValueAsString(prod);
-                    else json = new ObjectMapper().writeValueAsString(editedProduct);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    json = "JsonProcessingException";
-                }
-                System.out.println(json);
-
-                //System.out.println(json);
-
-                if(prod!=null){
-                    HttpPutRequest putRequest = new HttpPutRequest();
-                    try {
-                        putRequest.execute(json);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    HttpPostRequest postRequest = new HttpPostRequest();
-                    try {
-                        result = postRequest.execute(json).get();
-                        //System.out.println(result);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                startActivity(new Intent(editProduct.this, MainActivity.class));
-
-            }
-        });
-        */
     }
 
     private String getExtension(Uri uri){

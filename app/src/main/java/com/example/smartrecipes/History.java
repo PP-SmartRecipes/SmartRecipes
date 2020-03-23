@@ -9,19 +9,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
-public class History extends AppCompatActivity {
+public class History extends AppCompatActivity implements View.OnClickListener{
 
 
     RecyclerView mRecyclerView = null;
+    Button clear = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +29,16 @@ public class History extends AppCompatActivity {
 
 
         mRecyclerView = (RecyclerView)findViewById(R.id.vRecyclerView);
+        clear = (Button) findViewById(R.id.clearButton);
+
+        clear.setOnClickListener(this);
+
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(History.this, 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
         HistoryAdapter historyAdapter = new HistoryAdapter(History.this, MainActivity.getSearchList());
         mRecyclerView.setAdapter(historyAdapter);
-
 
 
         //Inizialize and assign variable
@@ -70,4 +72,18 @@ public class History extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        MainActivity.clearHistory();
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(MainActivity.getSearchList());
+        editor.putString("task list", json);
+        editor.apply();
+        mRecyclerView.setVisibility(View.INVISIBLE);
+
+
+
+    }
 }

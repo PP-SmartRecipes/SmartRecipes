@@ -38,10 +38,7 @@ public class SearchAdapter extends RecyclerView.Adapter<FoodViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, int i) {
         Picasso.get().load(myFoodList.get(i).getImageUrl()).into(foodViewHolder.imageView);
-        //foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
         foodViewHolder.mTitle.setText(myFoodList.get(i).getTitle());
-        //foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
-        //foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
         foodViewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

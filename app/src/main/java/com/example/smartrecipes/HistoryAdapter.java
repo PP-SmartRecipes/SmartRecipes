@@ -34,10 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<FoodViewHolder1>{
 
     @Override
     public void onBindViewHolder(@NonNull final FoodViewHolder1 foodViewHolder, int i) {
-        //foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
         foodViewHolder.mTitle.setText(myPref.get(i));
-        //foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
-        //foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
     }
 
     @Override
@@ -53,8 +50,6 @@ class FoodViewHolder1 extends RecyclerView.ViewHolder{
     public FoodViewHolder1(@NonNull View itemView) {
         super(itemView);
         mTitle = itemView.findViewById(R.id.tvvTitle);
-        //mDescription = itemView.findViewById(R.id.txtDescription);
-        //mCategory = itemView.findViewById(R.id.tvCategory);
         mCardview = itemView.findViewById(R.id.myCardView2);
     }
 }

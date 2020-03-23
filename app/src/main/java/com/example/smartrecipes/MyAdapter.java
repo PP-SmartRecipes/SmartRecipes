@@ -38,10 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, int i) {
         Picasso.get().load(myFoodList.get(myFoodList.size() - 1).getImageUrl()).into(foodViewHolder.imageView);
-        //foodViewHolder.imageView.setImageResource(myFoodList.get(i).getItemImage());
         foodViewHolder.mTitle.setText(myFoodList.get(myFoodList.size() - 1).getTitle());
-        //foodViewHolder.mDescription.setText(myFoodList.get(i).getDescription());
-        //foodViewHolder.mCategory.setText(myFoodList.get(i).getCategory());
         foodViewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,8 +69,6 @@ class FoodViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         imageView = itemView.findViewById(R.id.ivImage);
         mTitle = itemView.findViewById(R.id.tvTitle);
-        //mDescription = itemView.findViewById(R.id.txtDescription);
-        //mCategory = itemView.findViewById(R.id.tvCategory);
         mCardview = itemView.findViewById(R.id.myCardView);
     }
 }

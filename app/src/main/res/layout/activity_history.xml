@@ -24,8 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/baloo"
         android:text="Historia wyszukiwania"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp" />
 
     <androidx.cardview.widget.CardView
@@ -41,7 +42,7 @@
             android:id="@+id/clearButton"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="@color/buttons"
             android:text="Wyczyść historię"
             android:textColor="@color/common_google_signin_btn_text_light_default" />
     </androidx.cardview.widget.CardView>

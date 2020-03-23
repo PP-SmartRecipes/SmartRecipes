@@ -40,7 +40,7 @@
             android:hint="Wyszukaj przepis"
             android:background="@color/colorPrimaryDark"
             android:inputType="textNoSuggestions"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:gravity="center_vertical"
 
             android:drawablePadding="10dp"
@@ -92,17 +92,18 @@
         android:layout_below="@id/pole1"
         >
     </Space>
+
     <TextView
         android:id="@+id/TextNewest"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/Space1"
-        android:text="Najnowszy przepis"
-        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/baloo"
         android:gravity="center_horizontal"
-        android:textSize="30sp"
+        android:text="Najnowszy przepis"
+        android:textColor="@color/colorPrimaryDark"
 
-        />
+        android:textSize="30sp" />
 
     <Space
         android:id="@+id/Space2"
@@ -137,6 +138,8 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:background="@drawable/rounded_button"
+
+
      />
 
 

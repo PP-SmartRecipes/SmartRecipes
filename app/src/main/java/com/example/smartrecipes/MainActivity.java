@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 suggestions = new String[recipeList.size()];
                 for(int i = 0; i < recipeList.size(); i++){
                     suggestions[i] = recipeList.get(i).getTitle();
-                    Log.e("test",suggestions[i]);
                 }
                 editSearch.setAdapter(new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,suggestions));
             }
@@ -139,7 +138,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent i;
         i = new Intent(this, Recipes_list.class);
         i.putExtra("titleString", editSearch.getText().toString());
-        SearchList.add(editSearch.getText().toString());
+        if(!editSearch.getText().toString().isEmpty()) {
+            SearchList.add(editSearch.getText().toString());
+        }
         recipeSearchList = new ArrayList<Recipe>();
         for(int x = 0; x < recipeList.size(); x++){
             if(recipeList.get(x).getTitle().toLowerCase().contains(editSearch.getText().toString().toLowerCase())){
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putString("task list", json);
         editor.apply();
 
+
     }
 
     public void loadData(){
@@ -193,5 +195,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public static List<Recipe> getRecipeSearchList(){
         return recipeSearchList;
+    }
+
+    public static void clearHistory(){
+        SearchList.clear();
+
     }
 }
