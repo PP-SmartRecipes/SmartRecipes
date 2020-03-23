@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -123,7 +125,10 @@ public class RecipeAdd extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileUploader();
+                if(eanEditText.getText().toString().isEmpty() || brandEditText.getText().toString().isEmpty() || spinner.getSelectedItem().toString().isEmpty() || ingredients.isEmpty() || done == false)
+                    ;
+                else
+                    FileUploader();
             }
         });
 
@@ -251,12 +256,16 @@ public class RecipeAdd extends AppCompatActivity {
     }
 
     private void pushRecipe(){
-        recipe.setTitle(eanEditText.getText().toString().trim());
-        recipe.setDescription(brandEditText.getText().toString().trim());
-        recipe.setCategory(spinner.getSelectedItem().toString().trim());
-        recipe.setImageUrl(imageUrl);
-        recipe.setIngredients(ingredients);
-        dbref.push().setValue(recipe);
+            recipe.setTitle(eanEditText.getText().toString().trim());
+            recipe.setDescription(brandEditText.getText().toString().trim());
+            recipe.setCategory(spinner.getSelectedItem().toString().trim());
+            recipe.setImageUrl(imageUrl);
+            recipe.setIngredients(ingredients);
+            dbref.push().setValue(recipe);
+            Toast toast = Toast.makeText(this, "Pomyślnie dodano przepis!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 500);
+            toast.show();
+            goBack();
     }
 
     private void FileChooser(){
@@ -266,6 +275,12 @@ public class RecipeAdd extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    private void goBack(){
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        check.setVisibility(View.INVISIBLE);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -273,15 +288,17 @@ public class RecipeAdd extends AppCompatActivity {
         if(requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null){
             imguri = data.getData();
             done = true;
-        }
-        Drawable drawable = check.getDrawable();
-        if(drawable instanceof AnimatedVectorDrawableCompat) {
-            avd = (AnimatedVectorDrawableCompat) drawable;
-            avd.start();
-        }
-        else if(drawable instanceof AnimatedVectorDrawable){
-            avd2 = (AnimatedVectorDrawable) drawable;
-            avd2.start();
+            Drawable drawable = check.getDrawable();
+            if(drawable instanceof AnimatedVectorDrawableCompat) {
+                avd = (AnimatedVectorDrawableCompat) drawable;
+                check.setVisibility(View.VISIBLE);
+                avd.start();
+            }
+            else if(drawable instanceof AnimatedVectorDrawable){
+                avd2 = (AnimatedVectorDrawable) drawable;
+                check.setVisibility(View.VISIBLE);
+                avd2.start();
+            }
         }
     }
 }

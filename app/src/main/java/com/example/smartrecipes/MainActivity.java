@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         editSearch= (AutoCompleteTextView) findViewById(R.id.edit_search);
         editSearch.setOnClickListener(this);
         searchButton= (Button) findViewById(R.id.searchButton);
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 suggestions = new String[recipeList.size()];
                 for(int i = 0; i < recipeList.size(); i++){
                     suggestions[i] = recipeList.get(i).getTitle();
-                    Log.e("test",suggestions[i]);
                 }
                 editSearch.setAdapter(new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,suggestions));
             }
