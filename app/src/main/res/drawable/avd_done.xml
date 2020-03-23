@@ -11,7 +11,7 @@
             <path
                 android:name="done"
                 android:pathData="M 3.536 27.097 L 30.258 53.819 L 80.541 3.536"
-                android:strokeColor="#000000"
+                android:strokeColor="#39D41D"
                 android:strokeWidth="10"
                 android:trimPathEnd="0"/>
         </vector>

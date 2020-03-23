@@ -118,7 +118,7 @@ public class RecipeAdd extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(eanEditText.getText().toString().isEmpty() || brandEditText.getText().toString().isEmpty() || spinner.getSelectedItem().toString().isEmpty() || ingredients.isEmpty() || done == false)
+                if(eanEditText.getText().toString().isEmpty() || brandEditText.getText().toString().isEmpty() || spinner.getSelectedItem().toString().isEmpty() || ingredients.isEmpty())
                     ;
                 else
                     FileUploader();
@@ -161,30 +161,35 @@ public class RecipeAdd extends AppCompatActivity {
     }
 
     private void FileUploader(){
-        StorageReference ref = stref.child(System.currentTimeMillis() + "." + getExtension(imguri));
-
-        ref.putFile(imguri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //Get a URL to the uploaded content
-                        Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                        downloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                imageUrl = uri.toString();
-                                pushRecipe();
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                });
+        if(!done) {
+            imageUrl = "https://firebasestorage.googleapis.com/v0/b/smartrecipes-c64e7.appspot.com/o/Images%2Fbrak_zdjecia.png?alt=media&token=f1a6ebb3-392b-444e-a4ed-9bd35c18b6ba";
+            pushRecipe();
+        }
+        else {
+            StorageReference ref = stref.child(System.currentTimeMillis() + "." + getExtension(imguri));
+            ref.putFile(imguri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //Get a URL to the uploaded content
+                            Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                            downloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    imageUrl = uri.toString();
+                                    pushRecipe();
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            // ...
+                        }
+                    });
+        }
     }
 
     private void pushRecipe(){
