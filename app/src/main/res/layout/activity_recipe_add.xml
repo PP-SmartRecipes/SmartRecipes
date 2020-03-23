@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cv7"
-        android:layout_marginLeft="24dp"
+        android:layout_gravity="right"
         android:layout_marginTop="22dp"
         android:layout_toRightOf="@id/cv6"
         app:cardCornerRadius="16dp">
