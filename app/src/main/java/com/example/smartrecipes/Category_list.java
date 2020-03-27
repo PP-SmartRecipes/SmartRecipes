@@ -65,6 +65,14 @@ public class Category_list extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(),History.class));
                         overridePendingTransition(0,0);
                         return true;
+                    case R.id.shopping:
+                        startActivity(new Intent(getApplicationContext(),ShoppingList.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.favorite:
+                        startActivity(new Intent(getApplicationContext(),History.class));
+                        overridePendingTransition(0,0);
+                        return true;
                 }
                 return false;
             }

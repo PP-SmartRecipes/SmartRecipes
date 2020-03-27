@@ -10,13 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RecipeAdd"
-            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".RecipeAdd"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Category_list" />
         <activity android:name=".Recipes_list" />
         <activity android:name=".Detail" />
         <activity android:name=".History" />
         <activity android:name=".Category" />
+        <activity android:name=".ShoppingList" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

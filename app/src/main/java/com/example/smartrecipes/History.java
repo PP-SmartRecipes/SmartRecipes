@@ -63,7 +63,7 @@ public class History extends AppCompatActivity implements View.OnClickListener{
                     case R.id.history:
                         return true;
                     case R.id.shopping:
-                        startActivity(new Intent(getApplicationContext(),History.class));
+                        startActivity(new Intent(getApplicationContext(),ShoppingList.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:

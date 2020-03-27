@@ -54,16 +54,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp">
-
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="left"
                         android:text="Składniki"
                         android:textStyle="bold"
                         android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/shoppingCardButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="right"
+                            android:background="@drawable/shopping_cart"
+                            android:onClick="onClick"
+                            android:text=""
+                            android:textColor="@color/common_google_signin_btn_text_light_default" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/txtIngredients"
