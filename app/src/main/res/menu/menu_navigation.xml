@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/favorite"
+        android:title="Ulubione"
+        android:icon="@drawable/ic_favorite"/>
     <item
         android:id="@+id/category"
         android:title="Kategoria"
@@ -15,5 +18,10 @@
         android:id="@+id/history"
         android:title="Historia"
         android:icon="@drawable/history"/>
+    <item
+        android:id="@+id/shopping"
+        android:title="Zakupy"
+        android:icon="@drawable/shopping_cart"/>
+
 
 </menu>

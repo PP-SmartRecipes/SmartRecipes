@@ -55,6 +55,14 @@ public class Category extends AppCompatActivity implements View.OnClickListener{
                         startActivity(new Intent(getApplicationContext(),History.class));
                         overridePendingTransition(0,0);
                         return true;
+                    case R.id.shopping:
+                        startActivity(new Intent(getApplicationContext(),History.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.favorite:
+                        startActivity(new Intent(getApplicationContext(),History.class));
+                        overridePendingTransition(0,0);
+                        return true;
                 }
                 return false;
             }
