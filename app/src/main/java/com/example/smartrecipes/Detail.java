@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -172,8 +173,8 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
             PdfWriter.getInstance(document, new FileOutputStream(targetPdf));
             document.open();
             document.add(new Paragraph("Tytuł: " + foodTitle.getText().toString() + "\n", new Font(font2, 25)));
-            document.add(new Paragraph("Kategoria: " + foodCategory.getText().toString(), new Font(font, 22)));
-            document.add(new Paragraph(" "));
+            document.add(new Chunk("Kategoria: ",  new Font(font2,25)));
+            document.add(new Chunk(foodCategory.getText().toString(), new Font(font, 22)));
             document.add(new Paragraph("Składniki:", new Font(font2,25)));
             document.add(new Paragraph(foodIngredients.getText().toString() + "\n", new Font(font, 22)));
             document.add(new Paragraph("Opis:" , new Font(font2, 25)));
