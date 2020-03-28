@@ -1,8 +1,12 @@
 package com.example.smartrecipes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +34,7 @@ import java.util.Map;
 
 public class Detail extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int STORAGE_CODE = 1000;
     private Button btn;
 
     TextView foodTitle;
@@ -108,12 +113,28 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    createPdf();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (DocumentException e) {
-                    e.printStackTrace();
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+                        String [] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, STORAGE_CODE);
+                    }else {
+                        try {
+                            createPdf();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (DocumentException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }else{
+                    try {
+                        createPdf();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -150,7 +171,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         try {
             PdfWriter.getInstance(document, new FileOutputStream(targetPdf));
             document.open();
-            document.add(new Paragraph("Tytuł :" + foodTitle.getText().toString() + "\n", new Font(font2, 25)));
+            document.add(new Paragraph("Tytuł: " + foodTitle.getText().toString() + "\n", new Font(font2, 25)));
             document.add(new Paragraph("Kategoria: " + foodCategory.getText().toString(), new Font(font, 22)));
             document.add(new Paragraph(" "));
             document.add(new Paragraph("Składniki:", new Font(font2,25)));
@@ -168,5 +189,24 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         // close the document
         document.close();
         Toast.makeText(this, "PDF utworzony w "+ targetPdf +"!!!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case STORAGE_CODE:{
+                if(grantResults.length > 0 && grantResults [0] == PackageManager.PERMISSION_GRANTED){
+                    try {
+                        createPdf();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    Toast.makeText(this,"Brak pozwolenia", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 }
