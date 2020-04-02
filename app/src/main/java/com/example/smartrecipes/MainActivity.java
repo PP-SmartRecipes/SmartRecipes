@@ -162,30 +162,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        dbrefFav = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
-        dbrefFav.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                favouritesStrings.clear();
-                favouritesRecipes.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String s = ds.getValue(String.class);
-                    favouritesStrings.add(s);
-                }
-                for(String s : favouritesStrings)
-                    for(Recipe r : recipeList){
-                        if(s.equals(r.getTitle())) {
-                            favouritesRecipes.add(r);
-                            Log.e("Recipe", r.getTitle());
-                        }
+        if(mAuth.getCurrentUser() != null) {
+            dbrefFav = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
+            dbrefFav.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    favouritesStrings.clear();
+                    favouritesRecipes.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String s = ds.getValue(String.class);
+                        favouritesStrings.add(s);
                     }
-            }
+                    for(String s : favouritesStrings)
+                        for(Recipe r : recipeList){
+                            if(s.equals(r.getTitle())) {
+                                favouritesRecipes.add(r);
+                                Log.e("Recipe", r.getTitle());
+                            }
+                        }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
 
         newRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,9 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alert.show();
         }
 
-
         saveData();
-
     }
 
     private void saveData(){
@@ -241,8 +241,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String json = gson.toJson(SearchList);
         editor.putString("task list", json);
         editor.apply();
-
-
     }
 
     public void loadData(){
@@ -255,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (SearchList == null){
             SearchList = new ArrayList<>();
         }
-
     }
 
     public static List<String> getSearchList(){ return  SearchList;}

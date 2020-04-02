@@ -278,11 +278,13 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     }
 
     public boolean lookIn() {
-        dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
-        for (Recipe r : favouritesRecipes) {
-            Log.e("recipe", r.getTitle());
-            if (foodTitle.getText().toString().equals(r.getTitle()))
-                return true;
+        if(mAuth.getCurrentUser() != null) {
+            dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
+            for (Recipe r : favouritesRecipes) {
+                Log.e("recipe", r.getTitle());
+                if (foodTitle.getText().toString().equals(r.getTitle()))
+                    return true;
+            }
         }
         return false;
     }
