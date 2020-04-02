@@ -2,70 +2,46 @@ package com.example.smartrecipes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-
-public class History extends AppCompatActivity implements View.OnClickListener{
-
-
-    RecyclerView mRecyclerView = null;
-    Button clear = null;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
+public class UserSettings extends AppCompatActivity implements View.OnClickListener {
+    private TextView user;
+    private Button out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_user_settings);
 
+        FirebaseUser user_name = FirebaseAuth.getInstance().getCurrentUser();
+        String name = user_name.getDisplayName().toString();
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.vRecyclerView);
-        clear = (Button) findViewById(R.id.clearButton);
+        user = (TextView)findViewById(R.id.userName);
+        user.setText("Witaj, " + name +"!");
 
-        clear.setOnClickListener(this);
+        out = (Button)findViewById(R.id.button_sign_out);
+        out.setOnClickListener(this);
 
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(History.this, 1);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-
-        HistoryAdapter historyAdapter = new HistoryAdapter(History.this, MainActivity.getSearchList());
-        mRecyclerView.setAdapter(historyAdapter);
 
 
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.history);
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         //ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -81,6 +57,8 @@ public class History extends AppCompatActivity implements View.OnClickListener{
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.history:
+                        startActivity(new Intent(getApplicationContext(),History.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.shopping:
                         startActivity(new Intent(getApplicationContext(),ShoppingList.class));
@@ -94,24 +72,13 @@ public class History extends AppCompatActivity implements View.OnClickListener{
                 return false;
             }
         });
-
-
-
     }
-
-
-    @Override
     public void onClick(View v) {
-        MainActivity.clearHistory();
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(MainActivity.getSearchList());
-        editor.putString("task list", json);
-        editor.apply();
-        mRecyclerView.setVisibility(View.INVISIBLE);
-
-
-
-    }
+            if (v.getId() == R.id.button_sign_out) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this,SignInActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
 }
