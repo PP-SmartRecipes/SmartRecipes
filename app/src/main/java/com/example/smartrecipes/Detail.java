@@ -19,8 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -89,15 +92,12 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_detail);
 
         mAuth = FirebaseAuth.getInstance();
+        dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
 
         favouritesRecipes = MainActivity.getFavouritesList();
-
         favouritesButton = (Button) findViewById(R.id.favouritesButton);
-
         foodTitle = (TextView) findViewById(R.id.txtTitle);
-
         btn = (Button) findViewById(R.id.pdfButton);
-
         foodDescription = (TextView) findViewById(R.id.txtDescription);
         foodIngredients = (TextView) findViewById(R.id.txtIngredients);
         foodImage = (ImageView) findViewById(R.id.ivImage);
@@ -122,11 +122,6 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
             foodCategory.setText(mBundle.getString("Category"));
             Picasso.get().load(mBundle.getString("Image")).into(foodImage);
         }
-
-        if (lookIn())
-            favouritesButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_red));
-        else
-            favouritesButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_gray));
 
         Intent intent = getIntent();
         HashMap<String, String> ingredients = (HashMap<String, String>) intent.getSerializableExtra("Ingredients");
@@ -194,12 +189,15 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                             favourite = true;
                             MainActivity.removeFavouriteRecipe(r);
                             favouritesRecipes.remove(r);
+                            Toast.makeText(getApplicationContext(), "Usunięto przepis z ulubionych.", Toast.LENGTH_SHORT).show();
                             break;
                         }
                     }
                     if (!favourite) {
                         String s = foodTitle.getText().toString();
                         dbref.push().setValue(s);
+                        favouritesRecipes = MainActivity.getFavouritesList();
+                        Toast.makeText(getApplicationContext(), "Dodano przepis do ulubionych.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -213,7 +211,17 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
             ifadded = false;
         }
 
-        lookIn();
+        dbref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                updateHeart();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -277,15 +285,24 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    public boolean lookIn() {
+    private boolean lookIn() {
         if(mAuth.getCurrentUser() != null) {
             dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
+            Log.e("HALO", "HALO");
             for (Recipe r : favouritesRecipes) {
-                Log.e("recipe", r.getTitle());
-                if (foodTitle.getText().toString().equals(r.getTitle()))
+                if (foodTitle.getText().toString().equals(r.getTitle().toString())) {
+                    Log.e("CO", "CO");
                     return true;
+                }
             }
         }
         return false;
+    }
+
+    private void updateHeart(){
+        if (lookIn())
+            favouritesButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_red));
+        else
+            favouritesButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_gray));
     }
 }
