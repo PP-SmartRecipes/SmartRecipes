@@ -10,18 +10,22 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Recipes_list extends AppCompatActivity {
 
     RecyclerView mRecyclerView = null;
 
+    FirebaseAuth mAuth = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
+
+        mAuth = FirebaseAuth.getInstance();
 
         mRecyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
 
@@ -40,7 +44,7 @@ public class Recipes_list extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.category);
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         //ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,13 +62,20 @@ public class Recipes_list extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.shopping:
-                        startActivity(new Intent(getApplicationContext(),History.class));
+                        startActivity(new Intent(getApplicationContext(),ShoppingList.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }

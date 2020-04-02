@@ -14,14 +14,16 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 
 public class History extends AppCompatActivity implements View.OnClickListener{
 
-
     RecyclerView mRecyclerView = null;
     Button clear = null;
+
+    FirebaseAuth mAuth = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,6 +49,7 @@ public class History extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        mAuth = FirebaseAuth.getInstance();
 
         mRecyclerView = (RecyclerView)findViewById(R.id.vRecyclerView);
         clear = (Button) findViewById(R.id.clearButton);
@@ -87,18 +90,21 @@ public class History extends AppCompatActivity implements View.OnClickListener{
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }
         });
-
-
-
     }
-
 
     @Override
     public void onClick(View v) {
@@ -110,8 +116,5 @@ public class History extends AppCompatActivity implements View.OnClickListener{
         editor.putString("task list", json);
         editor.apply();
         mRecyclerView.setVisibility(View.INVISIBLE);
-
-
-
     }
 }

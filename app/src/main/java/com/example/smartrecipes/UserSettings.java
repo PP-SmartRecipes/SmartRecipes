@@ -35,8 +35,6 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
         out = (Button)findViewById(R.id.button_sign_out);
         out.setOnClickListener(this);
 
-
-
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -65,9 +63,16 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }

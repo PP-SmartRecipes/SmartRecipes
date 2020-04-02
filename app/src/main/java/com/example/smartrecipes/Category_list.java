@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 public class Category_list extends AppCompatActivity {
 
     RecyclerView mRecyclerView = null;
+    FirebaseAuth mAuth = null;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -40,6 +43,8 @@ public class Category_list extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
+
+        mAuth = FirebaseAuth.getInstance();
 
         mRecyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
 
@@ -88,9 +93,16 @@ public class Category_list extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }

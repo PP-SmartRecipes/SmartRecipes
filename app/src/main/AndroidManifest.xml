@@ -13,10 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UserSettings"></activity>
+        <activity android:name=".FavouritesActivity"></activity>
+        <activity android:name=".UserSettings" />
         <activity
             android:name=".SignUpActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SignInActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -35,7 +36,7 @@
         <activity android:name=".History" />
         <activity android:name=".Category" />
         <activity android:name=".ShoppingList" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

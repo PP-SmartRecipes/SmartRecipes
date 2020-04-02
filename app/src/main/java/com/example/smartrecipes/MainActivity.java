@@ -16,9 +16,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     DatabaseReference dbref = null;
+    static DatabaseReference dbrefFav = null;
+    FirebaseAuth mAuth = null;
     RecyclerView mRecyclerView = null;
     static List<Recipe> recipeList = null;
     static List<Recipe> recipeSearchList = null;
     static List<String> SearchList = new ArrayList<>();
+    List<String> favouritesStrings = null;
+    static List<Recipe> favouritesRecipes = null;
 
     AutoCompleteTextView editSearch;
     Button searchButton;
@@ -54,9 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, UserSettings.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -68,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         loadData();
+
+        mAuth = FirebaseAuth.getInstance();
+        favouritesStrings = new ArrayList<>();
+        favouritesRecipes = new ArrayList<>();
 
         editSearch= (AutoCompleteTextView) findViewById(R.id.edit_search);
         editSearch.setOnClickListener(this);
@@ -101,9 +116,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }
@@ -115,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
         recipeList = new ArrayList<>();
-
 
         //Database connection
         dbref = FirebaseDatabase.getInstance().getReference().child("Recipes");
@@ -141,6 +162,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        dbrefFav = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
+        dbrefFav.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                favouritesStrings.clear();
+                favouritesRecipes.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String s = ds.getValue(String.class);
+                    favouritesStrings.add(s);
+                }
+                for(String s : favouritesStrings)
+                    for(Recipe r : recipeList){
+                        if(s.equals(r.getTitle())) {
+                            favouritesRecipes.add(r);
+                            Log.e("Recipe", r.getTitle());
+                        }
+                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         newRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,11 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
             }
         });
-
-
     }
-
-
 
     public void refresh() {
         MyAdapter myAdapter = new MyAdapter(MainActivity.this, recipeList);
@@ -222,6 +264,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public static List<Recipe> getRecipeSearchList(){
         return recipeSearchList;
+    }
+    public static List<Recipe> getFavouritesList(){
+        return favouritesRecipes;
+    }
+    public static void removeFavouriteRecipe(Recipe r){
+        favouritesRecipes.remove(r);
+        dbrefFav.setValue(null);
+        for(Recipe recipe : favouritesRecipes){
+            dbrefFav.push().setValue(recipe.getTitle());
+        }
     }
 
     public static void clearHistory(){

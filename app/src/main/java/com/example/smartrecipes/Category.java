@@ -11,9 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Category extends AppCompatActivity implements View.OnClickListener{
     private CardView breakfastCard, lunchCard, dinnerCard, dessertCard, drinkCard, fastfoodCard;
+
+    FirebaseAuth mAuth = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,6 +40,9 @@ public class Category extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        mAuth = FirebaseAuth.getInstance();
+
         //defining Cards
         breakfastCard = (CardView) findViewById(R.id.breakfast_card);
         lunchCard = (CardView) findViewById(R.id.lunch_card);
@@ -79,9 +85,16 @@ public class Category extends AppCompatActivity implements View.OnClickListener{
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }

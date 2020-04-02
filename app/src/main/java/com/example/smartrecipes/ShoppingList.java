@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ShoppingList extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class ShoppingList extends AppCompatActivity {
     ExpandableListView expListView;
     static List<String> listDataHeader;
     static HashMap<String, List<String>> listDataChild;
+
+    FirebaseAuth mAuth = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,6 +55,8 @@ public class ShoppingList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
 
+        mAuth = FirebaseAuth.getInstance();
+
         try
         {
             if (listDataHeader.isEmpty()){
@@ -68,11 +73,9 @@ public class ShoppingList extends AppCompatActivity {
 
         // preparing list data
 //        prepareListData();
-
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
         // setting list adapter
-
         expListView.setAdapter(listAdapter);
 
         // Listview Group click listener
@@ -124,7 +127,6 @@ public class ShoppingList extends AppCompatActivity {
             }
         });
 
-
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -151,14 +153,20 @@ public class ShoppingList extends AppCompatActivity {
                     case R.id.shopping:
                         return true;
                     case R.id.favorite:
-                        startActivity(new Intent(getApplicationContext(),History.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                 }
                 return false;
             }
         });
-
     }
 
     public static void setListDataHeader(List<String> listaDataHeader){
@@ -176,5 +184,4 @@ public class ShoppingList extends AppCompatActivity {
     public static HashMap<String, List<String>> getListDataChild() {
         return listDataChild;
     }
-
 }

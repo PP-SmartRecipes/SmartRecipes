@@ -76,6 +76,14 @@
                             android:onClick="onClick"
                             android:text=""
                             android:textColor="@color/common_google_signin_btn_text_light_default" />
+
+                        <Button
+                            android:id="@+id/favouritesButton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginHorizontal="280dp"
+                            android:background="@drawable/ic_favorite"
+                            android:text="" />
                     </FrameLayout>
 
                     <TextView
