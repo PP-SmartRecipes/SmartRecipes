@@ -203,13 +203,28 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
-        if (!listDataHeader.contains(foodTitle.getText())) {
-            listDataHeader.add(foodTitle.getText().toString());
-            listDataChild.put(listDataHeader.get(listDataHeader.size() - 1), ingredientsList);
-            ifadded = true;
-        } else {
-            ifadded = false;
-        }
+        shoppingCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!listDataHeader.contains(foodTitle.getText())) {
+                    listDataHeader.add(foodTitle.getText().toString());
+                    listDataChild.put(listDataHeader.get(listDataHeader.size() - 1), ingredientsList);
+                    ShoppingList.setListDataHeader(listDataHeader);
+                    ShoppingList.setListDataChild(listDataChild);
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Dodano składniki do listy zakupów", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    listDataChild.replace(listDataHeader.get(listDataHeader.indexOf(foodTitle.getText())), ingredientsList);
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Zaktualizowano listę zakupów", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+
 
         dbref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -226,14 +241,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        ShoppingList.setListDataHeader(listDataHeader);
-        ShoppingList.setListDataChild(listDataChild);
-        if (ifadded) {
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Dodano składniki do listy zakupów", Toast.LENGTH_SHORT)
-                    .show();
-        }
+
     }
 
     private void createPdf() throws IOException, DocumentException {
