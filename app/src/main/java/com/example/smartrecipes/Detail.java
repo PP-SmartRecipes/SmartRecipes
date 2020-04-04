@@ -231,6 +231,8 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                                 .show();
                     } else {
                         listDataChild.replace(listDataHeader.get(listDataHeader.indexOf(foodTitle.getText())), ingredientsList);
+                        dbrefShopping.setValue(null);
+                        dbrefShopping.setValue(listDataChild);
                         Toast.makeText(
                                 getApplicationContext(),
                                 "Zaktualizowano listę zakupów", Toast.LENGTH_SHORT)
