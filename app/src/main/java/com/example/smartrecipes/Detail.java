@@ -101,8 +101,6 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance();
 
-        dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
-
         favouritesRecipes = MainActivity.getFavouritesList();
         favouritesButton = (Button) findViewById(R.id.favouritesButton);
         foodTitle = (TextView) findViewById(R.id.txtTitle);
@@ -246,6 +244,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
 
 
         if(mAuth.getCurrentUser() != null) {
+            dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
             dbref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
