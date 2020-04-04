@@ -60,6 +60,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     boolean ifadded = false;
 
     DatabaseReference dbref = null;
+    DatabaseReference dbrefShopping = null;
     FirebaseAuth mAuth = null;
 
     List<Recipe> favouritesRecipes = null;
@@ -77,9 +78,16 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, UserSettings.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent intent = new Intent(this, SignInActivity.class);
+                    startActivity(intent);
+                    break;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -92,7 +100,6 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_detail);
 
         mAuth = FirebaseAuth.getInstance();
-        dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
 
         favouritesRecipes = MainActivity.getFavouritesList();
         favouritesButton = (Button) findViewById(R.id.favouritesButton);
@@ -206,37 +213,46 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         shoppingCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!listDataHeader.contains(foodTitle.getText())) {
-                    listDataHeader.add(foodTitle.getText().toString());
-                    listDataChild.put(listDataHeader.get(listDataHeader.size() - 1), ingredientsList);
-                    ShoppingList.setListDataHeader(listDataHeader);
-                    ShoppingList.setListDataChild(listDataChild);
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Dodano składniki do listy zakupów", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    listDataChild.replace(listDataHeader.get(listDataHeader.indexOf(foodTitle.getText())), ingredientsList);
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Zaktualizowano listę zakupów", Toast.LENGTH_SHORT)
-                            .show();
+                if (mAuth.getCurrentUser() != null) {
+                    dbrefShopping = FirebaseDatabase.getInstance().getReference().child("ShoppingList").child(mAuth.getCurrentUser().getUid());
+                    if (!listDataHeader.contains(foodTitle.getText())) {
+                        listDataHeader.add(foodTitle.getText().toString());
+                        listDataChild.put(listDataHeader.get(listDataHeader.size() - 1), ingredientsList);
+                        ShoppingList.setListDataHeader(listDataHeader);
+                        ShoppingList.setListDataChild(listDataChild);
+                        dbrefShopping.setValue(null);
+                        dbrefShopping.setValue(listDataChild);
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Dodano składniki do listy zakupów", Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        listDataChild.replace(listDataHeader.get(listDataHeader.indexOf(foodTitle.getText())), ingredientsList);
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Zaktualizowano listę zakupów", Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 }
+                else
+                    startActivity(new Intent(getApplicationContext(), SignInActivity.class));
             }
         });
 
 
-        dbref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                updateHeart();
-            }
+        if(mAuth.getCurrentUser() != null) {
+            dbref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    updateHeart();
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override

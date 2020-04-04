@@ -35,9 +35,16 @@ public class History extends AppCompatActivity implements View.OnClickListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, UserSettings.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent intent = new Intent(this, SignInActivity.class);
+                    startActivity(intent);
+                    break;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -86,9 +93,16 @@ public class History extends AppCompatActivity implements View.OnClickListener{
                     case R.id.history:
                         return true;
                     case R.id.shopping:
-                        startActivity(new Intent(getApplicationContext(),ShoppingList.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), ShoppingList.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                     case R.id.favorite:
                         if(mAuth.getCurrentUser() != null) {
                             startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));

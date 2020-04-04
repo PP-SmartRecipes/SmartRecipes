@@ -22,6 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class ShoppingList extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class ShoppingList extends AppCompatActivity {
     static List<String> listDataHeader;
     static HashMap<String, List<String>> listDataChild;
 
+    DatabaseReference dbref = null;
     FirebaseAuth mAuth = null;
 
     @Override
@@ -42,9 +47,16 @@ public class ShoppingList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, UserSettings.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent intent = new Intent(this, SignInActivity.class);
+                    startActivity(intent);
+                    break;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -57,6 +69,9 @@ public class ShoppingList extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        listDataHeader = MainActivity.getListDataHeader();
+        listDataChild = MainActivity.getListDataChild();
+        /*
         try
         {
             if (listDataHeader.isEmpty()){
@@ -67,6 +82,7 @@ public class ShoppingList extends AppCompatActivity {
             listDataHeader = new ArrayList<>();
             listDataChild = new HashMap<>();
         }
+        */
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -123,6 +139,9 @@ public class ShoppingList extends AppCompatActivity {
                     listDataHeader.remove(groupPosition);
                 }
                 listAdapter.notifyDataSetChanged();
+                dbref = FirebaseDatabase.getInstance().getReference().child("ShoppingList").child(mAuth.getCurrentUser().getUid());
+                dbref.setValue(null);
+                dbref.setValue(listDataChild);
                 return false;
             }
         });

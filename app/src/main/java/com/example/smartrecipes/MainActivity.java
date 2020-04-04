@@ -30,12 +30,15 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     DatabaseReference dbref = null;
     static DatabaseReference dbrefFav = null;
+    static DatabaseReference dbrefShopping = null;
     FirebaseAuth mAuth = null;
     RecyclerView mRecyclerView = null;
     static List<Recipe> recipeList = null;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static List<String> SearchList = new ArrayList<>();
     List<String> favouritesStrings = null;
     static List<Recipe> favouritesRecipes = null;
+
+    static List<String> listDataHeader = null;
+    static HashMap<String, List<String>> listDataChild = null;
 
     AutoCompleteTextView editSearch;
     Button searchButton;
@@ -84,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         favouritesStrings = new ArrayList<>();
         favouritesRecipes = new ArrayList<>();
 
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+
         editSearch= (AutoCompleteTextView) findViewById(R.id.edit_search);
         editSearch.setOnClickListener(this);
         searchButton= (Button) findViewById(R.id.searchButton);
@@ -112,9 +121,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.shopping:
-                        startActivity(new Intent(getApplicationContext(),ShoppingList.class));
-                        overridePendingTransition(0,0);
-                        return true;
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), ShoppingList.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
                     case R.id.favorite:
                         if(mAuth.getCurrentUser() != null) {
                             startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
@@ -189,6 +205,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
 
+        if(mAuth.getCurrentUser() != null) {
+            dbrefShopping = FirebaseDatabase.getInstance().getReference().child("ShoppingList").child(mAuth.getCurrentUser().getUid());
+            dbrefShopping.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listDataHeader.clear();
+                    listDataChild.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String s = ds.getKey();
+                        Log.e("nazwa", s);
+                        listDataHeader.add(s);
+                        List<String> list = (List<String>) ds.getValue();
+                        listDataChild.put(s, list);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
         newRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,6 +309,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(Recipe recipe : favouritesRecipes){
             dbrefFav.push().setValue(recipe.getTitle());
         }
+    }
+    public static List<String> getListDataHeader(){
+        return listDataHeader;
+    }
+    public static HashMap<String, List<String>> getListDataChild(){
+        return listDataChild;
     }
 
     public static void clearHistory(){

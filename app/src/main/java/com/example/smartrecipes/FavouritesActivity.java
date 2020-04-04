@@ -42,9 +42,16 @@ public class FavouritesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, UserSettings.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent intent = new Intent(this, SignInActivity.class);
+                    startActivity(intent);
+                    break;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
