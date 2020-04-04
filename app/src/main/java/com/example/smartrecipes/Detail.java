@@ -198,6 +198,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                             favourite = true;
                             MainActivity.removeFavouriteRecipe(r);
                             favouritesRecipes.remove(r);
+                            FavouritesActivity.mySearchAdapter.notifyDataSetChanged();
                             Toast.makeText(getApplicationContext(), "Usunięto przepis z ulubionych.", Toast.LENGTH_SHORT).show();
                             break;
                         }

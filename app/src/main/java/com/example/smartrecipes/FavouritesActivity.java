@@ -31,6 +31,7 @@ public class FavouritesActivity extends AppCompatActivity {
     List<String> favouritesStrings = null;
     DatabaseReference dbref = null;
     FirebaseAuth mAuth = null;
+    public static SearchAdapter mySearchAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,7 +145,7 @@ public class FavouritesActivity extends AppCompatActivity {
     }
 
     private void update() {
-        SearchAdapter mySearchAdapter = new SearchAdapter(FavouritesActivity.this, MainActivity.getFavouritesList());
+        mySearchAdapter = new SearchAdapter(FavouritesActivity.this, MainActivity.getFavouritesList());
         mRecyclerView.setAdapter(mySearchAdapter);
     }
 }
