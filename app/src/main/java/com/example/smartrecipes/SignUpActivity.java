@@ -68,9 +68,11 @@ public class SignUpActivity extends AppCompatActivity {
                                 startActivity(intent);
                             } else {
                                 if(task.getException().toString().contains("The email address is already in use by another account."))
-                                    Toast.makeText(getApplicationContext(), "Użytkownik o podanym adresie email już istnieje.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Użytkownik o podanym adresie email już istnieje.", Toast.LENGTH_LONG).show();
                                 else if(task.getException().toString().contains("The email address is badly formatted."))
-                                    Toast.makeText(getApplicationContext(), "Niepoprawny adres email.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Niepoprawny adres email.", Toast.LENGTH_LONG).show();
+                                else if(task.getException().toString().contains("Password should be at least 6 characters"))
+                                    Toast.makeText(getApplicationContext(), "Hasło powinno składać się co najmniej z 6 znaków.", Toast.LENGTH_LONG).show();
                                 Log.e("TAG", "createUserWithEmail:failure", task.getException());
                                 // If sign in fails, display a message to the user.
                             }

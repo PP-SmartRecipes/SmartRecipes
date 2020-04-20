@@ -40,7 +40,8 @@
                     android:background="#FFFFFF"
                     android:ems="10"
                     android:hint="Nazwa użytkownika"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:maxLength="15"/>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
