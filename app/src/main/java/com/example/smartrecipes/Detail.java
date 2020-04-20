@@ -283,15 +283,13 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
             document.add(new Paragraph(foodDescription.getText().toString(), new Font(font, 22)));
 
             document.close();
+            Toast.makeText(this, "PDF utworzony w " + targetPdf + "!!!", Toast.LENGTH_SHORT).show();
 
         } catch (FileNotFoundException | DocumentException e) {
             e.printStackTrace();
             Toast.makeText(this, "Coś poszło nie tak...: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
-        // close the document
-        document.close();
-        Toast.makeText(this, "PDF utworzony w " + targetPdf + "!!!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

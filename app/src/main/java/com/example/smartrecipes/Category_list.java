@@ -86,6 +86,8 @@ public class Category_list extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.category:
+                        startActivity(new Intent(getApplicationContext(),Category.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));

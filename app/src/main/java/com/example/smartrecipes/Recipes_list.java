@@ -56,6 +56,8 @@ public class Recipes_list extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.history:
                         startActivity(new Intent(getApplicationContext(),History.class));
