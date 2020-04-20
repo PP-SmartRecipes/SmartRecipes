@@ -81,7 +81,8 @@
                             android:id="@+id/favouritesButton"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:layout_marginHorizontal="280dp"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="40dp"
                             android:background="@drawable/ic_favorite_gray"
                             android:text="" />
                     </FrameLayout>
