@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
                                 updateUI(user);
                             } else {
                                 if(task.getException().toString().contains("The email address is badly formatted."))
-                                    Toast.makeText(getApplicationContext(), "Niepoprawny adres email.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Niepoprawny format adresu email.", Toast.LENGTH_LONG).show();
                                 else if(task.getException().toString().contains("There is no user record corresponding to this identifier.") ||
                                         task.getException().toString().contains("The password is invalid or the user does not have a password."))
                                     Toast.makeText(getApplicationContext(), "Błędny adres email lub hasło.", Toast.LENGTH_LONG).show();
