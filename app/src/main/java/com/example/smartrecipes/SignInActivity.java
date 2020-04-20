@@ -42,7 +42,12 @@ public class SignInActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn(email.getText().toString(), password.getText().toString());
+                if(email.getText().toString().isEmpty())
+                    email.setError("Podaj adres email");
+                else if(password.getText().toString().isEmpty())
+                    password.setError("Podaj hasło");
+                else
+                    signIn(email.getText().toString(), password.getText().toString());
             }
         });
 
