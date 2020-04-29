@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserSettings extends AppCompatActivity implements View.OnClickListener {
     private TextView user;
     private Button out;
+    private Button changeUsernameButton = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,15 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
 
         out = (Button)findViewById(R.id.button_sign_out);
         out.setOnClickListener(this);
+
+        changeUsernameButton = (Button)findViewById(R.id.button_change_username);
+        changeUsernameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ChangeUsername.class);
+                startActivity(i);
+            }
+        });
 
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
