@@ -8,17 +8,19 @@ public class Recipe {
     private String category;
     private HashMap<String, String> ingredients;
     private String imageUrl;
+    private String author;
 
     public Recipe() {
 
     }
 
-    public Recipe(String title, String description, String category, HashMap<String, String> ingredients, String imageUrl) {
+    public Recipe(String title, String description, String category, HashMap<String, String> ingredients, String imageUrl, String author) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.ingredients = ingredients;
         this.imageUrl = imageUrl;
+        this.author = author;
     }
 
     public String getTitle() {
@@ -59,5 +61,13 @@ public class Recipe {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

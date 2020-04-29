@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -64,6 +65,7 @@ public class RecipeAdd extends AppCompatActivity {
 
     DatabaseReference dbref = null;
     StorageReference stref = null;
+    FirebaseAuth mAuth = null;
     public Uri imguri = null;
 
     @Override
@@ -106,6 +108,7 @@ public class RecipeAdd extends AppCompatActivity {
         check = (ImageView)findViewById(R.id.check);
         dbref = FirebaseDatabase.getInstance().getReference().child("Recipes");
         stref = FirebaseStorage.getInstance().getReference("Images");
+        mAuth = FirebaseAuth.getInstance();
         recipe = new Recipe();
         ingredients = new HashMap<>();
         spinner = (Spinner)findViewById(R.id.spinner);
@@ -218,6 +221,7 @@ public class RecipeAdd extends AppCompatActivity {
             recipe.setCategory(spinner.getSelectedItem().toString().trim());
             recipe.setImageUrl(imageUrl);
             recipe.setIngredients(ingredients);
+            recipe.setAuthor(mAuth.getCurrentUser().getUid());
             dbref.push().setValue(recipe);
             Toast toast = Toast.makeText(this, "Pomyślnie dodano przepis!", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 500);
