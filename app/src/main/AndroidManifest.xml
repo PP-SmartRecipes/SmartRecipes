@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChangeUsername"></activity>
+        <activity android:name=".MyOwnRecipes"></activity>
+        <activity android:name=".ChangeUsername" />
         <activity android:name=".FavouritesActivity" />
         <activity android:name=".UserSettings" />
         <activity

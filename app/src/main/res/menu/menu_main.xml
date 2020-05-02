@@ -3,10 +3,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/my_recipes"
+        android:icon="@drawable/ic_own_recipes"
+        android:onClick="onOptionsItemSelected"
+        app:showAsAction="ifRoom"
+        android:title="My Recipes">
+    </item>
+    <item
         android:id="@+id/account"
         android:icon="@drawable/ic_account_circle"
         android:onClick="onOptionsItemSelected"
         app:showAsAction="ifRoom"
         android:title="Account">
     </item>
+
 </menu>

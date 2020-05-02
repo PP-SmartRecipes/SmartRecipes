@@ -53,9 +53,18 @@ public class ShoppingList extends AppCompatActivity {
                     break;
                 }
                 else{
-                    Intent intent = new Intent(this, SignInActivity.class);
-                    startActivity(intent);
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
+                }
+            case R.id.my_recipes:
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, MyOwnRecipes.class);
+                    this.startActivity(intent);
                     break;
+                }
+                else{
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
                 }
             default:
                 return super.onOptionsItemSelected(item);

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static List<String> SearchList = new ArrayList<>();
     List<String> favouritesStrings = null;
     static List<Recipe> favouritesRecipes = null;
-
+    static List<Recipe> myOwnRecipes = null;
     static List<String> listDataHeader = null;
     static HashMap<String, List<String>> listDataChild = null;
 
@@ -74,6 +74,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent i = new Intent(getApplicationContext(), SignInActivity.class);
                     startActivity(i);
                 }
+            case R.id.my_recipes:
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, MyOwnRecipes.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -89,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
         favouritesStrings = new ArrayList<>();
         favouritesRecipes = new ArrayList<>();
-
+        myOwnRecipes = new ArrayList<>();
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
@@ -170,6 +180,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     suggestions[i] = recipeList.get(i).getTitle();
                 }
                 editSearch.setAdapter(new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,suggestions));
+
+                if(mAuth.getCurrentUser() != null) {
+                    for(int i=0; i<recipeList.size(); i++) {
+                        if (recipeList.get(i).getAuthor() != null) {
+                            if (recipeList.get(i).getAuthor().equals(mAuth.getCurrentUser().getUid())) {
+                                myOwnRecipes.add(recipeList.get(i));
+                                System.out.println("Dodano");
+
+                            }
+                            System.out.println(recipeList.get(i).getAuthor());
+                        }
+                    }
+                    System.out.println("Wszedłem" + mAuth.getCurrentUser().getUid());
+                }
             }
 
             @Override
@@ -309,6 +333,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(Recipe recipe : favouritesRecipes){
             dbrefFav.push().setValue(recipe.getTitle());
         }
+    }
+    public static List<Recipe> getMyOwnRecipes(){
+        return myOwnRecipes;
     }
     public static List<String> getListDataHeader(){
         return listDataHeader;

@@ -1,0 +1,136 @@
+package com.example.smartrecipes;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
+
+public class MyOwnRecipes extends AppCompatActivity  {
+
+    RecyclerView mRecyclerView = null;
+    FirebaseAuth mAuth = null;
+    MyOwnRecipesAdapter myOwnSearchRecipesAdapter;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_own_recipes);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mRecyclerView = (RecyclerView)findViewById(R.id.RecyclerView_Own_Recipes);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MyOwnRecipes.this, 1);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+
+        List<Recipe> myOwnRecipes = MainActivity.getMyOwnRecipes();
+
+        myOwnSearchRecipesAdapter = new MyOwnRecipesAdapter(this, myOwnRecipes);
+        myOwnSearchRecipesAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(myOwnSearchRecipesAdapter);
+
+
+        SwipeHelper swipeHelper = new SwipeHelper(this) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Usuń",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(final int pos) {
+                                final String item = myOwnSearchRecipesAdapter.getData().get(pos).toString();
+                                myOwnSearchRecipesAdapter.removeItem(pos);
+
+                            }
+                        }
+                ));
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Zmodyfikuj",
+                        0,
+                        Color.parseColor("#FF9502"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                Toast.makeText(getApplicationContext(), "You clicked like on item position " + pos, Toast.LENGTH_LONG).show();
+                                System.out.println(myOwnSearchRecipesAdapter.getData().get(pos).getAuthor());
+                                Intent i = new Intent(MyOwnRecipes.this, RecipeAdd.class);
+                                i.putExtra("Title", myOwnSearchRecipesAdapter.getData().get(pos).getTitle());
+                                i.putExtra("Description", myOwnSearchRecipesAdapter.getData().get(pos).getDescription());
+                                i.putExtra("Category", myOwnSearchRecipesAdapter.getData().get(pos).getCategory());
+                                i.putExtra("ImageUrl", myOwnSearchRecipesAdapter.getData().get(pos).getImageUrl());
+                                i.putExtra("Ingredients", myOwnSearchRecipesAdapter.getData().get(pos).getIngredients());
+
+                                startActivity(i);
+                            }
+                        }
+                ));
+            }
+        };
+        swipeHelper.attachToRecyclerView(mRecyclerView);
+
+
+        //BOTTOM NAVIAGTION
+
+        //Inizialize and assign variable
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home selected
+        bottomNavigationView.setSelectedItemId(R.id.home);
+
+        //ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.category:
+                        startActivity(new Intent(getApplicationContext(),Category.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.history:
+                        startActivity(new Intent(getApplicationContext(),History.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.shopping:
+                        startActivity(new Intent(getApplicationContext(),ShoppingList.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.favorite:
+                        if(mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            overridePendingTransition(0, 0);
+                            return true;
+                        }
+                }
+                return false;
+            }
+        });
+
+    }
+
+}

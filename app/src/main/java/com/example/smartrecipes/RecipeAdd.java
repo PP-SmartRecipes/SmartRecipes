@@ -38,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class RecipeAdd extends AppCompatActivity {
@@ -78,9 +79,25 @@ public class RecipeAdd extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.account:
-                Intent intent = new Intent(this, UserSettings.class);
-                this.startActivity(intent);
-                break;
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, UserSettings.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
+                }
+            case R.id.my_recipes:
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, MyOwnRecipes.class);
+                    this.startActivity(intent);
+                    break;
+                }
+                else{
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -130,6 +147,43 @@ public class RecipeAdd extends AppCompatActivity {
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
+
+        //Wartosci z edycji przepisu
+        Bundle mBundle = getIntent().getExtras();
+
+        if (mBundle != null) {
+            eanEditText.setText(mBundle.getString("Title"));
+            brandEditText.setText(mBundle.getString("Description"));
+            imageUrl = mBundle.getString("ImageUrl");
+
+            int selectionPosition= spinnerAdapter.getPosition(mBundle.getString("Category"));
+            System.out.println(selectionPosition);
+            spinner.setSelection(selectionPosition);
+
+            //Uzupelnianie skladnikow
+            Intent intent = getIntent();
+            ingredients = (HashMap<String, String>) intent.getSerializableExtra("Ingredients");
+            String ingredientsString = "";
+            Iterator it = ingredients.entrySet().iterator();
+            ingredientsStrings = new ArrayList<>();
+            String ingredientsString2 = "";
+            while (it.hasNext()) {
+                ingredientsString2 = "";
+                HashMap.Entry pair = (HashMap.Entry) it.next();
+                ingredientsString += pair.getKey();
+                ingredientsString += " ";
+                ingredientsString += pair.getValue();
+                ingredientsString2 += pair.getKey();
+                ingredientsString2 += " ";
+                ingredientsString2 += pair.getValue();
+                ingredientsString += '\n';
+                ingredientsStrings.add(ingredientsString2);
+
+            }
+            final ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredientsStrings);
+            ingredientsList.setAdapter(adapter);
+        }
+
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
