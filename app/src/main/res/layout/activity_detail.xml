@@ -32,14 +32,43 @@
                 android:text="Title"
                 android:textStyle="bold"
                 android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/txtCategory"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="Category"
-                android:textSize="20sp" />
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp">
+                <TextView
+                    android:id="@+id/txtCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Category"
+                    android:layout_gravity="center"
+                    android:textSize="20sp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="right">
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="15dp"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:isIndicator="false"
+                        android:theme="@style/RatingBar"
+                        />
+                    <TextView
+                        android:id="@+id/numberOfRatings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Liczba głosów:"
+                        android:layout_gravity="center"
+                        android:layout_below="@id/ratingBar"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+            </FrameLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/ingredients_card"

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,8 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     TextView foodCategory;
     Button shoppingCardButton;
     Button favouritesButton;
+    RatingBar ratingBar;
+    TextView numberOfRatings;
 
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
@@ -113,6 +116,10 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
 
         listDataHeader = ShoppingList.getListDataHeader();
         listDataChild = ShoppingList.getListDataChild();
+
+        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        numberOfRatings = (TextView)findViewById(R.id.numberOfRatings);
+
         try {
             if (listDataHeader.isEmpty()) {
             }
@@ -257,6 +264,17 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                 }
             });
         }
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (mAuth.getCurrentUser() != null) {
+                    System.out.println(rating);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Zaloguj się, by ocenić!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
