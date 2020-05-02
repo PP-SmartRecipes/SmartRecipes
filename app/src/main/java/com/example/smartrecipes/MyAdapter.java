@@ -49,6 +49,9 @@ public class MyAdapter extends RecyclerView.Adapter<FoodViewHolder>{
                 intent.putExtra("Title", myFoodList.get(myFoodList.size() - 1).getTitle());
                 intent.putExtra("Category", myFoodList.get(myFoodList.size() - 1).getCategory());
                 intent.putExtra("Ingredients", myFoodList.get(myFoodList.size() - 1).getIngredients());
+                intent.putExtra("Rating", myFoodList.get(myFoodList.size() - 1).getRating());
+                intent.putExtra("numberOfRatings", myFoodList.get(myFoodList.size() - 1).getNumberOfRatings());
+                intent.putStringArrayListExtra("usersRated", myFoodList.get(myFoodList.size() - 1).getUsersRated());
                 mContext.startActivity(intent);
             }
         });

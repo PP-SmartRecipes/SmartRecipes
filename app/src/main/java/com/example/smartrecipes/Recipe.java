@@ -1,6 +1,8 @@
 package com.example.smartrecipes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Recipe {
     private String title;
@@ -9,18 +11,24 @@ public class Recipe {
     private HashMap<String, String> ingredients;
     private String imageUrl;
     private String author;
+    private float rating;
+    private int numberOfRatings;
+    private ArrayList<String> usersRated;
 
     public Recipe() {
 
     }
 
-    public Recipe(String title, String description, String category, HashMap<String, String> ingredients, String imageUrl, String author) {
+    public Recipe(String title, String description, String category, HashMap<String, String> ingredients, String imageUrl, String author, float rating, int numberOfRatings, ArrayList<String> usersRated) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.ingredients = ingredients;
         this.imageUrl = imageUrl;
         this.author = author;
+        this.rating = rating;
+        this.numberOfRatings = numberOfRatings;
+        this.usersRated = usersRated;
     }
 
     public String getTitle() {
@@ -69,5 +77,29 @@ public class Recipe {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(int numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
+    }
+
+    public ArrayList<String> getUsersRated() {
+        return usersRated;
+    }
+
+    public void setUsersRated(ArrayList<String> usersRated) {
+        this.usersRated = usersRated;
     }
 }

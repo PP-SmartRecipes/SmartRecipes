@@ -98,6 +98,9 @@ public class MyOwnRecipes extends AppCompatActivity  {
                                 i.putExtra("Category", myOwnSearchRecipesAdapter.getData().get(pos).getCategory());
                                 i.putExtra("ImageUrl", myOwnSearchRecipesAdapter.getData().get(pos).getImageUrl());
                                 i.putExtra("Ingredients", myOwnSearchRecipesAdapter.getData().get(pos).getIngredients());
+                                i.putExtra("Rating", myOwnSearchRecipesAdapter.getData().get(pos).getRating());
+                                i.putExtra("numberOfRatings", myOwnSearchRecipesAdapter.getData().get(pos).getNumberOfRatings());
+                                i.putStringArrayListExtra("usersRated", myOwnSearchRecipesAdapter.getData().get(pos).getUsersRated());
                                 i.putExtra("Update", true);
                                 startActivity(i);
                             }

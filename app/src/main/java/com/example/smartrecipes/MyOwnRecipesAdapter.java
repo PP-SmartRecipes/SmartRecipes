@@ -49,6 +49,9 @@ public class MyOwnRecipesAdapter extends RecyclerView.Adapter<FoodViewHolder>{
                 intent.putExtra("Title", myFoodList.get(foodViewHolder.getAdapterPosition()).getTitle());
                 intent.putExtra("Category", myFoodList.get(foodViewHolder.getAdapterPosition()).getCategory());
                 intent.putExtra("Ingredients", myFoodList.get(foodViewHolder.getAdapterPosition()).getIngredients());
+                intent.putExtra("Rating", myFoodList.get(foodViewHolder.getAdapterPosition()).getRating());
+                intent.putExtra("numberOfRatings", myFoodList.get(foodViewHolder.getAdapterPosition()).getNumberOfRatings());
+                intent.putStringArrayListExtra("usersRated", myFoodList.get(foodViewHolder.getAdapterPosition()).getUsersRated());
                 mContext.startActivity(intent);
             }
         });

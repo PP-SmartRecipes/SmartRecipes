@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -61,10 +62,14 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     List<String> ingredientsList;
+    float ratingGlobal;
+    int numberOfRatingsInt;
+    ArrayList<String> usersRated = new ArrayList<>();
     boolean ifadded = false;
 
     DatabaseReference dbref = null;
     DatabaseReference dbrefShopping = null;
+    DatabaseReference dbrefRating = null;
     FirebaseAuth mAuth = null;
 
     List<Recipe> favouritesRecipes = null;
@@ -132,11 +137,16 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
 
         Bundle mBundle = getIntent().getExtras();
 
+        usersRated.clear();
+
         if (mBundle != null) {
             foodTitle.setText(mBundle.getString("Title"));
             foodDescription.setText(mBundle.getString("Description"));
             foodCategory.setText(mBundle.getString("Category"));
             Picasso.get().load(mBundle.getString("Image")).into(foodImage);
+            ratingGlobal = mBundle.getFloat("Rating");
+            numberOfRatingsInt = mBundle.getInt("numberOfRatings");
+            usersRated = mBundle.getStringArrayList("usersRated");
         }
 
         Intent intent = getIntent();
@@ -283,14 +293,49 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                 }
             });
         }
+
+        dbrefRating = FirebaseDatabase.getInstance().getReference().child("Recipes");
+
+        ratingBar.setRating(ratingGlobal);
+        numberOfRatings.setText("Liczba głosów: " + numberOfRatingsInt);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
                 if (mAuth.getCurrentUser() != null) {
-                    System.out.println(rating);
+                    if(usersRated.contains(mAuth.getCurrentUser().getUid())){
+                        Toast.makeText(getApplicationContext(),"Już oceniłeś ten przepis!",Toast.LENGTH_SHORT).show();
+                        ratingBar.setRating(ratingGlobal);
+                    }
+                    else if(!usersRated.contains(mAuth.getCurrentUser().getUid())){
+                        usersRated.add(mAuth.getCurrentUser().getUid());
+                        float userRating = ratingBar.getRating();
+                        final float newRating = (float)((ratingGlobal * numberOfRatingsInt) + userRating) / (numberOfRatingsInt + 1);
+                        ratingGlobal = newRating;
+                        ratingBar.setRating(newRating);
+                        numberOfRatingsInt++;
+                        numberOfRatings.setText("Liczba głosów: " + numberOfRatingsInt);
+                        Query query = dbrefRating.orderByChild("title").equalTo(foodTitle.getText().toString());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                    ds.getRef().child("rating").setValue(newRating);
+                                    ds.getRef().child("numberOfRatings").setValue(numberOfRatingsInt);
+                                    ds.getRef().child("usersRated").setValue(usersRated);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                        Toast.makeText(getApplicationContext(),"Pomyślnie oceniono przepis!",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Zaloguj się, by ocenić!",Toast.LENGTH_SHORT).show();
+                    ratingBar.setRating(ratingGlobal);
                 }
             }
         });
@@ -351,10 +396,8 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     private boolean lookIn() {
         if(mAuth.getCurrentUser() != null) {
             dbref = FirebaseDatabase.getInstance().getReference().child("Favourites").child(mAuth.getCurrentUser().getUid());
-            Log.e("HALO", "HALO");
             for (Recipe r : favouritesRecipes) {
                 if (foodTitle.getText().toString().equals(r.getTitle().toString())) {
-                    Log.e("CO", "CO");
                     return true;
                 }
             }

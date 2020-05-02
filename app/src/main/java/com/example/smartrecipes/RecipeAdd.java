@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -77,6 +78,10 @@ public class RecipeAdd extends AppCompatActivity {
     FirebaseAuth mAuth = null;
     public Uri imguri = null;
 
+    private float rating;
+    private int numberOfRatings;
+    private ArrayList<String> usersRated = new ArrayList<>();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -111,6 +116,7 @@ public class RecipeAdd extends AppCompatActivity {
         }
         return true;
     }
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,12 +165,22 @@ public class RecipeAdd extends AppCompatActivity {
         //Wartosci z edycji przepisu
         Bundle mBundle = getIntent().getExtras();
 
+        usersRated.clear();
+
         if (mBundle != null) {
             eanEditText.setText(mBundle.getString("Title"));
             brandEditText.setText(mBundle.getString("Description"));
             oldTitle = eanEditText.getText().toString();
             imageUrl = mBundle.getString("ImageUrl");
             update = mBundle.getBoolean("Update");
+
+            sendBtn.setText("Edytuj");
+
+            rating = mBundle.getFloat("Rating");
+            numberOfRatings = mBundle.getInt("numberOfRatings");
+            usersRated = mBundle.getStringArrayList("usersRated");
+
+            Log.e("rating", String.valueOf(rating));
 
             int selectionPosition= spinnerAdapter.getPosition(mBundle.getString("Category"));
             System.out.println(selectionPosition);
@@ -224,15 +240,9 @@ public class RecipeAdd extends AppCompatActivity {
                 String item = ingredientsStrings.get(position);
                 ingredientsStrings.remove(item);
                 ingredients.remove(item);
-
-                for(Map.Entry<String, String> entry : ingredients.entrySet()) {
-                    System.out.println("Wypisywanko:\n" + entry.getKey() + ":" + entry.getValue().toString());
-                }
-
                 adapter.notifyDataSetChanged();
             }
         });
-
     }
 
     private String getExtension(Uri uri){
@@ -287,6 +297,11 @@ public class RecipeAdd extends AppCompatActivity {
             recipe.setImageUrl(imageUrl);
             recipe.setIngredients(ingredients);
             recipe.setAuthor(mAuth.getCurrentUser().getUid());
+            recipe.setRating(0);
+            recipe.setNumberOfRatings(0);
+            ArrayList<String> list = new ArrayList<>();
+            list.add("");
+            recipe.setUsersRated(list);
             dbref.push().setValue(recipe);
             Toast toast = Toast.makeText(this, "Pomyślnie dodano przepis!", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 500);
@@ -295,13 +310,16 @@ public class RecipeAdd extends AppCompatActivity {
     }
 
     private void updateRecipe(){
-        Log.e("halko", "update");
         recipe.setTitle(eanEditText.getText().toString().trim());
         recipe.setDescription(brandEditText.getText().toString().trim());
         recipe.setCategory(spinner.getSelectedItem().toString().trim());
         recipe.setImageUrl(imageUrl);
         recipe.setIngredients(ingredients);
         recipe.setAuthor(mAuth.getCurrentUser().getUid());
+        recipe.setRating(rating);
+        recipe.setNumberOfRatings(numberOfRatings);
+        recipe.setUsersRated(usersRated);
+
         Query query = dbref.orderByChild("title").equalTo(oldTitle);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
