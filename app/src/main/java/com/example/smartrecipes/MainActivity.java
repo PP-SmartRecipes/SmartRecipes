@@ -182,17 +182,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editSearch.setAdapter(new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,suggestions));
 
                 if(mAuth.getCurrentUser() != null) {
+                    myOwnRecipes.clear();
                     for(int i=0; i<recipeList.size(); i++) {
                         if (recipeList.get(i).getAuthor() != null) {
                             if (recipeList.get(i).getAuthor().equals(mAuth.getCurrentUser().getUid())) {
                                 myOwnRecipes.add(recipeList.get(i));
-                                System.out.println("Dodano");
-
                             }
-                            System.out.println(recipeList.get(i).getAuthor());
                         }
                     }
-                    System.out.println("Wszedłem" + mAuth.getCurrentUser().getUid());
                 }
             }
 
@@ -217,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         for(Recipe r : recipeList){
                             if(s.equals(r.getTitle())) {
                                 favouritesRecipes.add(r);
-                                Log.e("Recipe", r.getTitle());
                             }
                         }
                 }
@@ -238,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     listDataChild.clear();
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String s = ds.getKey();
-                        Log.e("nazwa", s);
                         listDataHeader.add(s);
                         List<String> list = (List<String>) ds.getValue();
                         listDataChild.put(s, list);

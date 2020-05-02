@@ -46,7 +46,7 @@
                     android:background="#FFFFFF"
                     android:ems="10"
                     android:hint="Hasło"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPassword" />
             </androidx.cardview.widget.CardView>
 
             <Button

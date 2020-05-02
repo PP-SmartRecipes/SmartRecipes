@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,8 +31,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeAdd extends AppCompatActivity {
 
@@ -48,6 +54,8 @@ public class RecipeAdd extends AppCompatActivity {
     Spinner spinner = null;
     Button imageButton = null;
     boolean done = false;
+    boolean update = false;
+    String oldTitle = "";
     String imageUrl = "";
     List<String> ingredientsStrings;
     EditText eanEditText;
@@ -154,7 +162,9 @@ public class RecipeAdd extends AppCompatActivity {
         if (mBundle != null) {
             eanEditText.setText(mBundle.getString("Title"));
             brandEditText.setText(mBundle.getString("Description"));
+            oldTitle = eanEditText.getText().toString();
             imageUrl = mBundle.getString("ImageUrl");
+            update = mBundle.getBoolean("Update");
 
             int selectionPosition= spinnerAdapter.getPosition(mBundle.getString("Category"));
             System.out.println(selectionPosition);
@@ -163,27 +173,16 @@ public class RecipeAdd extends AppCompatActivity {
             //Uzupelnianie skladnikow
             Intent intent = getIntent();
             ingredients = (HashMap<String, String>) intent.getSerializableExtra("Ingredients");
-            String ingredientsString = "";
             Iterator it = ingredients.entrySet().iterator();
             ingredientsStrings = new ArrayList<>();
             String ingredientsString2 = "";
             while (it.hasNext()) {
                 ingredientsString2 = "";
                 HashMap.Entry pair = (HashMap.Entry) it.next();
-                ingredientsString += pair.getKey();
-                ingredientsString += " ";
-                ingredientsString += pair.getValue();
                 ingredientsString2 += pair.getKey();
-                ingredientsString2 += " ";
-                ingredientsString2 += pair.getValue();
-                ingredientsString += '\n';
                 ingredientsStrings.add(ingredientsString2);
-
             }
-            final ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredientsStrings);
-            ingredientsList.setAdapter(adapter);
         }
-
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,6 +224,11 @@ public class RecipeAdd extends AppCompatActivity {
                 String item = ingredientsStrings.get(position);
                 ingredientsStrings.remove(item);
                 ingredients.remove(item);
+
+                for(Map.Entry<String, String> entry : ingredients.entrySet()) {
+                    System.out.println("Wypisywanko:\n" + entry.getKey() + ":" + entry.getValue().toString());
+                }
+
                 adapter.notifyDataSetChanged();
             }
         });
@@ -239,8 +243,12 @@ public class RecipeAdd extends AppCompatActivity {
 
     private void FileUploader(){
         if(!done) {
-            imageUrl = "https://firebasestorage.googleapis.com/v0/b/smartrecipes-c64e7.appspot.com/o/Images%2Fbrak_zdjecia.png?alt=media&token=f1a6ebb3-392b-444e-a4ed-9bd35c18b6ba";
-            pushRecipe();
+            if (update)
+                updateRecipe();
+            else {
+                imageUrl = "https://firebasestorage.googleapis.com/v0/b/smartrecipes-c64e7.appspot.com/o/Images%2Fbrak_zdjecia.png?alt=media&token=f1a6ebb3-392b-444e-a4ed-9bd35c18b6ba";
+                pushRecipe();
+            }
         }
         else {
             StorageReference ref = stref.child(System.currentTimeMillis() + "." + getExtension(imguri));
@@ -254,7 +262,10 @@ public class RecipeAdd extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     imageUrl = uri.toString();
-                                    pushRecipe();
+                                    if(update)
+                                        updateRecipe();
+                                    else
+                                        pushRecipe();
                                 }
                             });
                         }
@@ -281,6 +292,32 @@ public class RecipeAdd extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 500);
             toast.show();
             goBack();
+    }
+
+    private void updateRecipe(){
+        Log.e("halko", "update");
+        recipe.setTitle(eanEditText.getText().toString().trim());
+        recipe.setDescription(brandEditText.getText().toString().trim());
+        recipe.setCategory(spinner.getSelectedItem().toString().trim());
+        recipe.setImageUrl(imageUrl);
+        recipe.setIngredients(ingredients);
+        recipe.setAuthor(mAuth.getCurrentUser().getUid());
+        Query query = dbref.orderByChild("title").equalTo(oldTitle);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    ds.getRef().setValue(recipe);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        update = false;
+        goBack();
     }
 
     private void FileChooser(){

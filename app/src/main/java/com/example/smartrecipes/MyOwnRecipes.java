@@ -18,6 +18,12 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -25,25 +31,27 @@ public class MyOwnRecipes extends AppCompatActivity  {
 
     RecyclerView mRecyclerView = null;
     FirebaseAuth mAuth = null;
+    DatabaseReference dbref = null;
     MyOwnRecipesAdapter myOwnSearchRecipesAdapter;
+    List<Recipe> myOwnRecipes = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_own_recipes);
 
         mAuth = FirebaseAuth.getInstance();
+        dbref = FirebaseDatabase.getInstance().getReference().child("Recipes");
 
         mRecyclerView = (RecyclerView)findViewById(R.id.RecyclerView_Own_Recipes);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MyOwnRecipes.this, 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
-        List<Recipe> myOwnRecipes = MainActivity.getMyOwnRecipes();
+        myOwnRecipes = MainActivity.getMyOwnRecipes();
 
         myOwnSearchRecipesAdapter = new MyOwnRecipesAdapter(this, myOwnRecipes);
         myOwnSearchRecipesAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(myOwnSearchRecipesAdapter);
-
 
         SwipeHelper swipeHelper = new SwipeHelper(this) {
             @Override
@@ -55,9 +63,23 @@ public class MyOwnRecipes extends AppCompatActivity  {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(final int pos) {
-                                final String item = myOwnSearchRecipesAdapter.getData().get(pos).toString();
-                                myOwnSearchRecipesAdapter.removeItem(pos);
+                                String name = myOwnSearchRecipesAdapter.getData().get(pos).getTitle();
+                                Query query = dbref.orderByChild("title").equalTo(name);
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                            ds.getRef().removeValue();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                myOwnSearchRecipesAdapter.removeItem(pos);
                             }
                         }
                 ));
@@ -69,6 +91,7 @@ public class MyOwnRecipes extends AppCompatActivity  {
                             @Override
                             public void onClick(int pos) {
                                 Toast.makeText(getApplicationContext(), "You clicked like on item position " + pos, Toast.LENGTH_LONG).show();
+                                String name = myOwnSearchRecipesAdapter.getData().get(pos).getTitle();
                                 System.out.println(myOwnSearchRecipesAdapter.getData().get(pos).getAuthor());
                                 Intent i = new Intent(MyOwnRecipes.this, RecipeAdd.class);
                                 i.putExtra("Title", myOwnSearchRecipesAdapter.getData().get(pos).getTitle());
@@ -76,7 +99,7 @@ public class MyOwnRecipes extends AppCompatActivity  {
                                 i.putExtra("Category", myOwnSearchRecipesAdapter.getData().get(pos).getCategory());
                                 i.putExtra("ImageUrl", myOwnSearchRecipesAdapter.getData().get(pos).getImageUrl());
                                 i.putExtra("Ingredients", myOwnSearchRecipesAdapter.getData().get(pos).getIngredients());
-
+                                i.putExtra("Update", true);
                                 startActivity(i);
                             }
                         }
@@ -85,9 +108,7 @@ public class MyOwnRecipes extends AppCompatActivity  {
         };
         swipeHelper.attachToRecyclerView(mRecyclerView);
 
-
         //BOTTOM NAVIAGTION
-
         //Inizialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -130,7 +151,5 @@ public class MyOwnRecipes extends AppCompatActivity  {
                 return false;
             }
         });
-
     }
-
 }
