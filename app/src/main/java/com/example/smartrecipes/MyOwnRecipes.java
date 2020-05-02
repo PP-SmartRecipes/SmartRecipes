@@ -90,7 +90,6 @@ public class MyOwnRecipes extends AppCompatActivity  {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                Toast.makeText(getApplicationContext(), "You clicked like on item position " + pos, Toast.LENGTH_LONG).show();
                                 String name = myOwnSearchRecipesAdapter.getData().get(pos).getTitle();
                                 System.out.println(myOwnSearchRecipesAdapter.getData().get(pos).getAuthor());
                                 Intent i = new Intent(MyOwnRecipes.this, RecipeAdd.class);

@@ -56,6 +56,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
     Button favouritesButton;
     RatingBar ratingBar;
     TextView numberOfRatings;
+    Button shareRecipeButton;
 
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
@@ -113,6 +114,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
         foodImage = (ImageView) findViewById(R.id.ivImage);
         foodCategory = (TextView) findViewById(R.id.txtCategory);
         shoppingCardButton = (Button) findViewById(R.id.shoppingCardButton);
+        shareRecipeButton = (Button) findViewById(R.id.shareButton);
 
         listDataHeader = ShoppingList.getListDataHeader();
         listDataChild = ShoppingList.getListDataChild();
@@ -246,6 +248,23 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                 }
                 else
                     startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+            }
+        });
+
+        shareRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent myIntent = new Intent(Intent.ACTION_SEND);
+            myIntent.setType("text/plain");
+            String shareSub = foodTitle.getText().toString();
+            String shareBody = "Tytuł: " + foodTitle.getText().toString() + "\nKategoria: " +
+                    foodCategory.getText().toString() + "\nSkładniki:\n" +
+                    foodIngredients.getText().toString() +"\n" + "Opis:\n" +
+                    foodDescription.getText().toString();
+            myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+            myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(myIntent, "Udostępnij"));
+
             }
         });
 
