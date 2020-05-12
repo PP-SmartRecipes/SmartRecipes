@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChangeUsername">
+    tools:context=".ChangeEmail">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,17 +20,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="50dp" >
 
                 <EditText
-                    android:id="@+id/change_username_field"
+                    android:id="@+id/change_email_field"
                     android:layout_width="251dp"
                     android:layout_height="40dp"
                     android:background="#FFFFFF"
                     android:ems="10"
-                    android:hint="Nowa nazwa użytkownika"
-                    android:inputType="textPersonName"
-                    android:maxLength="15" />
+                    android:hint="Nowy adres e-mail"
+                    android:inputType="textPersonName" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -41,7 +40,7 @@
                 android:layout_marginTop="25dp">
 
                 <EditText
-                    android:id="@+id/change_username_password"
+                    android:id="@+id/change_email_password"
                     android:layout_width="251dp"
                     android:layout_height="40dp"
                     android:background="#FFFFFF"
@@ -51,7 +50,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/change_username_button"
+                android:id="@+id/change_email_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -59,4 +58,5 @@
                 android:text="Wyślij" />
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

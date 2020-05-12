@@ -15,34 +15,53 @@
 
     <TextView
         android:id="@+id/userName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:fontFamily="@font/baloo"
+        android:layout_below="@id/Space1"
+        android:layout_marginLeft="90dp"
         android:gravity="left"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp"
-        android:layout_marginLeft="20dp"
-        android:layout_below="@id/Space1"/>
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/hi"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/Space1"
+        android:layout_marginLeft="15dp"
+        android:gravity="left"
+        android:text="Witaj"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/exclamation_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/Space1"
+        android:layout_toRightOf="@id/userName"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="!"
+        android:textSize="30sp"/>
 
     <Space
         android:id="@+id/Space2"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_below="@id/userName"
-        >
-    </Space>
+        android:layout_height="120dp"
+        android:layout_below="@id/userName"></Space>
 
     <Button
         android:id="@+id/button_sign_out"
-        android:layout_width="250dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Wyloguj się"
-        android:layout_below="@id/button_change_username"
-        android:layout_marginTop="30dp"
+        android:layout_below="@id/button_change_password"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
+        android:layout_marginTop="90dp"
         android:background="@drawable/rounded_button"
-        />
+        android:text="Wyloguj się"
+        android:textColor="#F2E91E1E" />
 
     <Button
         android:id="@+id/button_change_username"
@@ -51,8 +70,27 @@
         android:layout_below="@id/Space2"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_button"
-        android:text="Zmień nazwę użytkownika"
-        android:textStyle="bold" />
+        android:text="Zmień nazwę użytkownika" />
+
+    <Button
+        android:id="@+id/button_change_email"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_change_username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_button"
+        android:text="Zmień adres e-mail" />
+
+    <Button
+        android:id="@+id/button_change_password"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_change_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_button"
+        android:text="Zmień hasło" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -65,4 +103,5 @@
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:menu="@menu/menu_navigation" />
+
 </RelativeLayout>

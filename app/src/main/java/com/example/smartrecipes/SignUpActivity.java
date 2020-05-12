@@ -58,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
                     login.setError("Podaj nazwę użytkownika");
 
                 else if (email.getText().toString().isEmpty())
-                    email.setError("Podaj email");
+                    email.setError("Podaj adres e-mail");
 
                 else if(password.getText().toString().isEmpty())
                     password.setError("Podaj hasło");

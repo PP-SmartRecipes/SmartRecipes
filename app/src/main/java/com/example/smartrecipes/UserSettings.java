@@ -18,9 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserSettings extends AppCompatActivity implements View.OnClickListener {
-    private TextView user;
-    private Button out;
+    private TextView user = null;
+    private Button out = null;
     private Button changeUsernameButton = null;
+    private Button changePasswordButton = null;
+    private Button changeEmailButtom = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
         String name = user_name.getDisplayName().toString();
 
         user = (TextView)findViewById(R.id.userName);
-        user.setText("Witaj, " + name +"!");
+        user.setText(name);
 
         out = (Button)findViewById(R.id.button_sign_out);
         out.setOnClickListener(this);
@@ -45,13 +47,26 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //Inizialize and assign variable
+        changePasswordButton = (Button)findViewById(R.id.button_change_password);
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ChangePassword.class);
+                startActivity(i);
+            }
+        });
+
+        changeEmailButtom = (Button)findViewById(R.id.button_change_email);
+        changeEmailButtom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ChangeEmail.class);
+                startActivity(i);
+            }
+        });
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        //Set Home selected
         bottomNavigationView.setSelectedItemId(R.id.home);
-
-        //ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
