@@ -55,38 +55,43 @@ public class ChangePassword extends AppCompatActivity {
 
     private void changePassword(){
         if(!passwordField.getText().toString().isEmpty() && !oldPasswordField.getText().toString().isEmpty()){
-            AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail().toString(), oldPasswordField.getText().toString());
-            currentUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        currentUser.updatePassword(passwordField.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Intent i = new Intent(getApplicationContext(), UserSettings.class);
-                                    startActivity(i);
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Hasło zostało poprawnie zmienione", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 200);
-                                    toast.show();
+            if(!passwordField.getText().toString().equals(oldPasswordField.getText().toString())){
+                AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail().toString(), oldPasswordField.getText().toString());
+                currentUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            currentUser.updatePassword(passwordField.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Intent i = new Intent(getApplicationContext(), UserSettings.class);
+                                        startActivity(i);
+                                        Toast toast = Toast.makeText(getApplicationContext(), "Hasło zostało poprawnie zmienione", Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 200);
+                                        toast.show();
+                                    }
+                                    else {
+                                        if(task.getException().toString().contains("Password should be at least 6 characters"))
+                                            showMessage("Nowe hasło powinno składać się\nco najmniej z 6 znaków", 1);
+                                    }
                                 }
-                                else {
-                                    if(task.getException().toString().contains("Password should be at least 6 characters"))
-                                        showMessage("Nowe hasło powinno składać się\nco najmniej z 6 znaków", 1);
-                                }
+                            });
+                        }
+                        else{
+                            if(task.getException().toString().contains("The password is invalid or the user does not have a password")) {
+                                showMessage("Niepoprawne stare hasło", 1);
                             }
-                        });
-                    }
-                    else{
-                        if(task.getException().toString().contains("The password is invalid or the user does not have a password")) {
-                            showMessage("Niepoprawne stare hasło", 1);
-                        }
-                        else if(task.getException().toString().contains("We have blocked all requests from this device due to unusual activity. Try again later.")){
-                            showMessage("Zbyt wiele nieudanych prób logowania.\nSpróbuj ponownie później", 1);
+                            else if(task.getException().toString().contains("We have blocked all requests from this device due to unusual activity. Try again later.")){
+                                showMessage("Zbyt wiele nieudanych prób logowania.\nSpróbuj ponownie później.", 1);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+            else{
+                showMessage("Nowe hasło musi różnić się od poprzedniego", 1);
+            }
         }
     }
 
