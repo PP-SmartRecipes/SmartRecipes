@@ -336,6 +336,9 @@ public class RecipeAdd extends AppCompatActivity {
         });
         update = false;
         goBack();
+        Toast toast = Toast.makeText(getApplicationContext(), "Pomyślnie edytowano przepis", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 500);
+        toast.show();
     }
 
     private void FileChooser(){

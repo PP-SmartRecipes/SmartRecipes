@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -80,6 +81,9 @@ public class MyOwnRecipes extends AppCompatActivity  {
                                 });
 
                                 myOwnSearchRecipesAdapter.removeItem(pos);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Pomyślnie usunięto przepis", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 700);
+                                toast.show();
                             }
                         }
                 ));
