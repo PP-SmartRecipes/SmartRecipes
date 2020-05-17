@@ -85,7 +85,7 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch(item.getItemId()) {
             case R.id.account:
                 if(mAuth.getCurrentUser() != null) {
                     Intent intent = new Intent(this, UserSettings.class);
@@ -93,9 +93,18 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
                     break;
                 }
                 else{
-                    Intent intent = new Intent(this, SignInActivity.class);
-                    startActivity(intent);
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
+                }
+            case R.id.my_recipes:
+                if(mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(this, MyOwnRecipes.class);
+                    this.startActivity(intent);
                     break;
+                }
+                else{
+                    Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                    startActivity(i);
                 }
             default:
                 return super.onOptionsItemSelected(item);

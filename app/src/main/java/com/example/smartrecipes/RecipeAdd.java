@@ -59,6 +59,7 @@ public class RecipeAdd extends AppCompatActivity {
     String oldTitle = "";
     String imageUrl = "";
     List<String> ingredientsStrings;
+    List<String> ingredientsKeys;
     EditText eanEditText;
     EditText brandEditText;
     EditText ingredientsEditText = null;
@@ -131,6 +132,7 @@ public class RecipeAdd extends AppCompatActivity {
         ingredientsList = findViewById(R.id.listview1);
 
         ingredientsStrings = new ArrayList<>();
+        ingredientsKeys = new ArrayList<>();
         autocomplete = new ArrayList<>();
         reqHints = new ArrayList<>();
         reqHintsArr = new String[]{};
@@ -192,10 +194,12 @@ public class RecipeAdd extends AppCompatActivity {
             Iterator it = ingredients.entrySet().iterator();
             ingredientsStrings = new ArrayList<>();
             String ingredientsString2 = "";
+
             while (it.hasNext()) {
                 ingredientsString2 = "";
                 HashMap.Entry pair = (HashMap.Entry) it.next();
                 ingredientsString2 += pair.getKey();
+                ingredientsKeys.add(ingredientsString2);
                 ingredientsString2 += " ";
                 ingredientsString2 += pair.getValue();
                 ingredientsStrings.add(ingredientsString2);
@@ -239,8 +243,10 @@ public class RecipeAdd extends AppCompatActivity {
         ingredientsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = ingredientsStrings.get(position);
-                ingredientsStrings.remove(item);
+                String item = ingredientsKeys.get(position);
+                String items = ingredientsStrings.get(position);
+                ingredientsStrings.remove(items);
+                ingredientsKeys.remove(item);
                 ingredients.remove(item);
                 adapter.notifyDataSetChanged();
             }
