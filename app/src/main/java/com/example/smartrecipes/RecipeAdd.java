@@ -196,6 +196,8 @@ public class RecipeAdd extends AppCompatActivity {
                 ingredientsString2 = "";
                 HashMap.Entry pair = (HashMap.Entry) it.next();
                 ingredientsString2 += pair.getKey();
+                ingredientsString2 += " ";
+                ingredientsString2 += pair.getValue();
                 ingredientsStrings.add(ingredientsString2);
             }
         }
